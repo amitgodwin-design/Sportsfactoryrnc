@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Sports Factory Ranchi – Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#002970;--blue2:#0050c8;--blue3:#1a6fff;--sky:#00b4f0;
+  --green:#00875a;--gbg:#e3fcef;--gtxt:#006644;
+  --red:#d32f2f;--rbg:#fdecea;--rtxt:#b71c1c;
+  --amber:#e65100;--abg:#fff3e0;--atxt:#bf360c;
+  --purple:#5e00d4;
+  --bg:#f0f3fa;--white:#ffffff;
+  --text:#0c1b3a;--text2:#5a6780;
+  --border:#dde4f0;
+  --r:20px;--rs:12px;
+  --sh:0 2px 14px rgba(0,41,112,.08);
+  --shm:0 6px 28px rgba(0,41,112,.14);
+  --shl:0 12px 40px rgba(0,41,112,.22);
+}
+html,body{min-height:100%;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font-family:'Poppins',sans-serif;border:none;outline:none}
+button{cursor:pointer}
+
+/* ─── LOGIN ──────────────────────────────────────────── */
+#loginScreen{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#00215e 0%,#0044b8 55%,#006fe8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.ls-trophy{font-size:3.8rem;filter:drop-shadow(0 6px 14px rgba(0,0,0,.3));margin-bottom:10px}
+.ls-brand{color:#fff;font-size:1.8rem;font-weight:900;letter-spacing:-.5px;text-align:center;line-height:1.15}
+.ls-sub{color:rgba(255,255,255,.55);font-size:.78rem;font-weight:500;margin-bottom:30px;text-align:center}
+.ls-card{background:#fff;border-radius:28px;padding:28px 22px 22px;width:100%;max-width:340px;box-shadow:0 32px 80px rgba(0,0,0,.35)}
+.pin-hint{font-size:.8rem;font-weight:600;color:var(--text2);text-align:center;margin-bottom:18px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin-bottom:24px}
+.pdot{width:16px;height:16px;border-radius:50%;border:2.5px solid #c8d4e8;background:transparent;transition:.18s}
+.pdot.on{background:var(--blue2);border-color:var(--blue2);transform:scale(1.25);box-shadow:0 0 0 4px rgba(0,80,200,.15)}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pkey{background:#f0f4fb;border-radius:16px;height:64px;font-size:1.55rem;font-weight:800;color:var(--blue);box-shadow:0 3px 8px rgba(0,41,112,.1);transition:.12s}
+.pkey:active{transform:scale(.86);background:#dce8ff}
+.pkey.del{color:var(--red);font-size:1rem}
+.pkey.ok{background:linear-gradient(135deg,var(--blue2),var(--blue3));color:#fff;font-size:1.1rem;box-shadow:0 4px 18px rgba(0,80,200,.4)}
+.pkey.ok:active{background:var(--blue)}
+.pin-err{color:var(--red);text-align:center;font-size:.76rem;min-height:18px;margin-top:12px;font-weight:700}
+
+/* ─── APP SHELL ──────────────────────────────────────── */
+#app{display:none;flex-direction:column;min-height:100vh}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.hdr{background:linear-gradient(120deg,#001f5c 0%,#0044b8 50%,#006fe8 100%);padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,31,92,.4)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.hdr-title{color:#fff;font-size:1.05rem;font-weight:800;line-height:1.25}
+.hdr-title small{display:block;font-size:.62rem;font-weight:500;opacity:.65;letter-spacing:.2px}
+.hdr-right{display:flex;gap:6px;align-items:center}
+.hdr-icon-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.22);color:#fff;width:36px;height:36px;border-radius:50%;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.hdr-icon-btn:active{background:rgba(255,255,255,.32)}
+.loc-bar{display:flex;background:rgba(0,0,0,.25);border-radius:14px;padding:3px;gap:3px;margin-bottom:14px}
+.loc-tab{flex:1;border:none;padding:9px 4px;border-radius:11px;font-size:.74rem;font-weight:700;color:rgba(255,255,255,.7);background:transparent;transition:.2s}
+.loc-tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+
+/* ─── MAIN ───────────────────────────────────────────── */
+.main{padding:16px;max-width:960px;margin:0 auto;width:100%;flex:1;padding-bottom:120px}
+
+/* ─── STAT CARDS ─────────────────────────────────────── */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat-card{border-radius:20px;padding:18px 10px 14px;position:relative;overflow:hidden;text-align:center;box-shadow:var(--shl)}
+.stat-card::before{content:'';position:absolute;right:-22px;top:-22px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.18)}
+.stat-card::after{content:'';position:absolute;left:-14px;bottom:-24px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.1)}
+.sc-icon{font-size:1.6rem;display:block;margin-bottom:4px;position:relative;z-index:1}
+.sc-num{font-size:2.6rem;font-weight:900;color:#fff;line-height:1;position:relative;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+.sc-lbl{font-size:.56rem;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.8px;margin-top:5px;position:relative;z-index:1}
+.sc-blue{background:linear-gradient(145deg,#002970,#0050c8)}
+.sc-red{background:linear-gradient(145deg,#9b0000,#e53935)}
+.sc-amber{background:linear-gradient(145deg,#b34500,#f4511e)}
+
+/* ─── QUICK ACTION CARDS ──────────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.qa-card{border-radius:20px;padding:18px 14px;display:flex;align-items:center;gap:13px;box-shadow:var(--shl);transition:.16s;text-align:left}
+.qa-card:active{transform:scale(.95)}
+.qa-add{background:linear-gradient(135deg,#0044b8,#00b4f0)}
+.qa-cats{background:linear-gradient(135deg,#5e00d4,#b44df5)}
+.qa-ico{width:52px;height:52px;flex-shrink:0;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.25);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.qa-txt{color:#fff}
+.qa-txt b{display:block;font-size:.98rem;font-weight:800}
+.qa-txt small{font-size:.65rem;opacity:.82;font-weight:500}
+
+/* ─── BACKUP ROW (2 equal buttons) ───────────────────── */
+/* ADDED: backup system — visible backup card below quick actions */
+.backup-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.bk-btn{border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);transition:.16s;border:2px solid var(--border);background:var(--white)}
+.bk-btn:active{transform:scale(.95)}
+.bk-export{border-color:#b8d4ff;background:linear-gradient(135deg,#f0f6ff,#e3eeff)}
+.bk-import{border-color:#b8f0d8;background:linear-gradient(135deg,#f0fff8,#e0faf0)}
+.bk-ico{width:38px;height:38px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.bk-export .bk-ico{background:#dbeaff;color:var(--blue2)}
+.bk-import .bk-ico{background:#d0f5e8;color:var(--green)}
+.bk-txt b{display:block;font-size:.8rem;font-weight:800;color:var(--text)}
+.bk-txt small{font-size:.62rem;color:var(--text2);font-weight:500}
+
+/* ─── SEARCH BAR ─────────────────────────────────────── */
+.search-box{display:flex;align-items:center;gap:11px;background:var(--white);border-radius:16px;padding:0 16px;border:2px solid var(--border);box-shadow:var(--sh);margin-bottom:14px;transition:.2s}
+.search-box:focus-within{border-color:var(--blue2);box-shadow:0 0 0 4px rgba(0,80,200,.1)}
+.search-box i{color:var(--text2);font-size:.95rem}
+.search-box input{flex:1;background:transparent;color:var(--text);font-size:.95rem;font-weight:500;padding:14px 0}
+.search-box input::placeholder{color:#b0bfce}
+
+/* ─── CATEGORY PILLS ─────────────────────────────────── */
+.pills-wrap{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.pills-wrap::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;border:2.5px solid var(--border);border-radius:24px;padding:8px 17px;font-size:.77rem;font-weight:700;background:var(--white);color:var(--text2);box-shadow:var(--sh);transition:.15s;white-space:nowrap}
+.pill:active{transform:scale(.93)}
+.pill.active{background:var(--blue2);color:#fff;border-color:var(--blue2);box-shadow:0 4px 14px rgba(0,80,200,.3)}
+.pill.p-low{border-color:var(--red);color:var(--red)}
+.pill.p-low.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* ─── SORT / COUNT BAR ───────────────────────────────── */
+.sort-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sort-row label{font-size:.77rem;font-weight:600;color:var(--text2);white-space:nowrap}
+.sort-row select{background:#fff;border:2px solid var(--border);border-radius:11px;padding:8px 12px;font-size:.8rem;font-weight:600;color:var(--text);box-shadow:var(--sh)}
+.count-chip{margin-left:auto;background:var(--blue2);color:#fff;font-size:.71rem;font-weight:700;padding:5px 13px;border-radius:20px;box-shadow:0 3px 10px rgba(0,80,200,.3)}
+
+/* ─── SECTION HEADER ─────────────────────────────────── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-hdr h2{font-size:.93rem;font-weight:800;color:var(--text)}
+.sec-hdr span{font-size:.73rem;font-weight:600;color:var(--blue2)}
+
+/* ─── ITEMS GRID ─────────────────────────────────────── */
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+@media(min-width:540px){.items-grid{grid-template-columns:repeat(auto-fill,minmax(188px,1fr))}}
+@media(min-width:800px){.items-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}}
+
+/* ─── ITEM CARD ──────────────────────────────────────── */
+.item-card{background:var(--white);border-radius:20px;overflow:hidden;box-shadow:var(--shm);border:1.5px solid var(--border);transition:.16s;cursor:pointer}
+.item-card:active{transform:scale(.96);box-shadow:var(--sh)}
+.card-bar{height:7px;width:100%}
+.card-img-box{width:100%;aspect-ratio:1;overflow:hidden;background:#f0f4fb}
+.card-img{width:100%;height:100%;object-fit:cover;display:block}
+.card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.4rem}
+.card-body{padding:13px 12px 11px}
+.card-name{font-size:.87rem;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-cat{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:22px;font-size:.69rem;font-weight:700;margin-bottom:9px}
+.sb-ok{background:var(--gbg);color:var(--gtxt)}
+.sb-warn{background:var(--abg);color:var(--atxt)}
+.sb-low{background:var(--rbg);color:var(--rtxt)}
+.sz-row{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:10px}
+.sz-cell{background:#f0f4fb;border-radius:6px;padding:4px 2px;text-align:center}
+.szl{font-size:.52rem;color:var(--text2);font-weight:700;display:block}
+.szv{font-size:.8rem;font-weight:800;color:var(--text);display:block}
+.card-btns{display:flex;gap:6px}
+.cbtn{flex:1;padding:8px 4px;border-radius:11px;font-size:.72rem;font-weight:700;transition:.12s}
+.cbtn:active{transform:scale(.88)}
+.cbe{background:#e6f0ff;color:var(--blue2)}
+.cbd{background:var(--rbg);color:var(--rtxt)}
+
+/* ─── EMPTY STATE ────────────────────────────────────── */
+.empty{text-align:center;padding:70px 20px;color:var(--text2)}
+.empty .ei{font-size:5rem;display:block;margin-bottom:18px}
+.empty p{font-size:.92rem;line-height:1.7}
+
+/* ─── FAB ────────────────────────────────────────────── */
+.fab{position:fixed;bottom:24px;right:16px;z-index:90;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border-radius:20px;padding:15px 22px;font-size:.93rem;font-weight:800;box-shadow:0 10px 32px rgba(0,41,112,.45);display:flex;align-items:center;gap:10px;transition:.15s}
+.fab:active{transform:scale(.93)}
+
+/* ─── MODAL ──────────────────────────────────────────── */
+.modal-ov{position:fixed;inset:0;z-index:200;background:rgba(5,15,50,.55);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.24s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:#fff;width:100%;max-width:530px;border-radius:26px 26px 0 0;padding:18px 18px 36px;max-height:94vh;overflow-y:auto;transform:translateY(50px);transition:.24s;scrollbar-width:none}
+.modal::-webkit-scrollbar{display:none}
+.modal-ov.open .modal{transform:translateY(0)}
+@media(min-width:560px){.modal-ov{align-items:center}.modal{border-radius:26px;max-height:90vh}}
+.m-handle{width:44px;height:4px;background:#dde3ed;border-radius:4px;margin:0 auto 18px}
+.m-title{font-size:1.18rem;font-weight:800;color:var(--text);margin-bottom:18px;display:flex;align-items:center;gap:9px}
+
+/* ─── FORM ELEMENTS ──────────────────────────────────── */
+.fg{margin-bottom:16px}
+.flbl{display:block;font-size:.71rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.finput{width:100%;background:#f2f6fc;border:2px solid var(--border);border-radius:12px;padding:13px 14px;color:var(--text);font-size:.95rem;font-weight:500;transition:.2s}
+.finput:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 4px rgba(0,80,200,.09)}
+.finput[readonly]{background:#eaf1ff;color:var(--blue);font-weight:800;font-size:1.1rem}
+select.finput{appearance:none;-webkit-appearance:none;cursor:pointer}
+.s-band{background:linear-gradient(90deg,var(--blue),var(--blue3));border-radius:11px;padding:10px 14px;color:#fff;font-size:.78rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.si-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.si-wrap{text-align:center}
+.si-wrap label{font-size:.67rem;font-weight:700;color:var(--text2);display:block;margin-bottom:4px}
+.si-wrap input{width:100%;background:#f2f6fc;border:2px solid var(--border);border-radius:9px;padding:10px 3px;text-align:center;color:var(--text);font-size:.9rem;font-weight:800;transition:.18s}
+.si-wrap input:focus{border-color:var(--blue2);background:#fff}
+
+/* ─── IMAGE UPLOAD ───────────────────────────────────── */
+.img-zone{border:2.5px dashed #c0cfea;border-radius:13px;padding:26px 16px;text-align:center;cursor:pointer;background:#f7faff;transition:.2s}
+.img-zone:hover{border-color:var(--blue2);background:#eef5ff}
+.img-zone i{font-size:2.4rem;color:#b0bfce;display:block;margin-bottom:8px}
+.img-zone p{font-size:.78rem;color:var(--text2);font-weight:500}
+.img-prev-wrap{position:relative;display:inline-block;margin-top:8px}
+.img-prev{width:110px;height:110px;object-fit:cover;border-radius:13px;display:block;box-shadow:var(--shm)}
+.img-rm{position:absolute;top:-9px;right:-9px;background:var(--red);color:#fff;width:26px;height:26px;border-radius:50%;font-size:.64rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.22)}
+.upbtns{display:flex;gap:8px;margin-top:10px}
+.upbtn{flex:1;background:#eef4ff;border:2px solid #d0e0ff;border-radius:11px;padding:11px 6px;color:var(--blue2);font-size:.77rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;transition:.14s}
+.upbtn:active{background:#dce8ff}
+
+/* ─── FORM BUTTONS ───────────────────────────────────── */
+.fbtns{display:flex;gap:10px;margin-top:20px}
+.btn-p{flex:2;background:linear-gradient(135deg,var(--blue),var(--blue3));border-radius:13px;padding:15px;color:#fff;font-size:1rem;font-weight:800;box-shadow:0 6px 20px rgba(0,41,112,.3);transition:.14s}
+.btn-p:active{transform:scale(.96)}
+.btn-s{flex:1;background:#f0f4ff;border-radius:13px;padding:15px;color:var(--blue);font-size:.9rem;font-weight:700}
+
+/* ─── DRAFT BANNER ───────────────────────────────────── */
+/* ADDED: auto-save draft — visual indicator when draft is active */
+.draft-banner{background:#fffbe6;border:1.5px solid #ffe58f;border-radius:10px;padding:9px 13px;font-size:.76rem;font-weight:600;color:#7c5c00;margin-bottom:14px;display:none;align-items:center;gap:8px}
+.draft-banner.show{display:flex}
+
+/* ─── CATEGORY MANAGER ───────────────────────────────── */
+.cat-count-tip{font-size:.71rem;color:var(--text2);font-weight:600;margin-bottom:10px}
+.cat-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.cat-row{display:flex;align-items:center;gap:10px;background:#f4f8ff;border-radius:13px;padding:13px 14px;border:1.5px solid var(--border);transition:.14s}
+.cat-row:hover{border-color:#c0d4f8;background:#edf4ff}
+.cat-em{font-size:1.5rem;flex-shrink:0}
+.cat-nm{flex:1;font-weight:700;font-size:.93rem;color:var(--text)}
+.cat-del{background:var(--rbg);color:var(--rtxt);width:36px;height:36px;border-radius:10px;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.12s}
+.cat-del:active{transform:scale(.88)}
+.no-cats{color:var(--text2);text-align:center;padding:28px;font-size:.88rem}
+.add-cat-row{display:flex;gap:8px;align-items:stretch}
+.emoji-pick{background:#f2f6fc;border:2px solid var(--border);border-radius:11px;padding:11px 10px;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+.cat-name-input{flex:1;background:#f2f6fc;border:2px solid var(--border);border-radius:11px;padding:11px 14px;color:var(--text);font-size:.9rem;font-weight:600;min-width:0;transition:.18s}
+.cat-name-input:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 4px rgba(0,80,200,.09)}
+.btn-add-cat{background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border-radius:11px;padding:11px 14px;font-size:.78rem;font-weight:700;flex-shrink:0;box-shadow:0 4px 14px rgba(0,41,112,.26);transition:.14s}
+.btn-add-cat:active{transform:scale(.9)}
+
+/* ─── CONFIRM MODAL ──────────────────────────────────── */
+.conf-ico{font-size:4rem;text-align:center;display:block;margin-bottom:8px}
+.conf-msg{text-align:center;color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:22px}
+
+/* ─── DETAIL MODAL ───────────────────────────────────── */
+.det-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;margin-bottom:14px;box-shadow:var(--shm)}
+.det-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.det-name{font-size:1.18rem;font-weight:800;color:var(--text)}
+.det-cat{font-size:.71rem;color:var(--text2);font-weight:600;margin-top:3px}
+.det-sg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.dsz{background:#f2f6fc;border-radius:11px;padding:11px 5px;text-align:center;border:1.5px solid var(--border)}
+.dsz-l{font-size:.6rem;color:var(--text2);font-weight:700;display:block;text-transform:uppercase}
+.dsz-v{font-size:1.4rem;font-weight:900;color:var(--blue);display:block;margin-top:2px}
+.loc-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.loc-box{border-radius:13px;padding:14px;text-align:center}
+.loc-box.wh{background:linear-gradient(145deg,#e3ecff,#d0e0ff);border:1.5px solid #bad0ff}
+.loc-box.gd{background:linear-gradient(145deg,#e3fcef,#c8f5db);border:1.5px solid #86efb6}
+.loc-box-lbl{font-size:.7rem;font-weight:700;color:var(--text2);margin-bottom:4px}
+.loc-box-num{font-size:2.1rem;font-weight:900}
+.loc-box.wh .loc-box-num{color:var(--blue)}
+.loc-box.gd .loc-box-num{color:var(--green)}
+
+/* ─── CAMERA ─────────────────────────────────────────── */
+.cam-wrap{width:100%;aspect-ratio:4/3;background:#000;border-radius:13px;overflow:hidden;margin-bottom:13px}
+.cam-wrap video{width:100%;height:100%;object-fit:cover}
+.cam-btns{display:flex;gap:10px}
+.cam-shoot{flex:2;background:linear-gradient(135deg,var(--blue),var(--blue3));border-radius:13px;padding:15px;font-size:1rem;font-weight:800;color:#fff;box-shadow:0 4px 18px rgba(0,41,112,.3)}
+.cam-cancel{flex:1;background:#eef3ff;border-radius:13px;padding:15px;font-size:.9rem;font-weight:700;color:var(--blue)}
+
+/* ─── TOAST ──────────────────────────────────────────── */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--text);color:#fff;padding:12px 26px;border-radius:30px;font-weight:700;font-size:.83rem;z-index:999;opacity:0;transition:.28s;box-shadow:0 10px 32px rgba(0,0,0,.3);white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.tok{background:#1b7d54}
+.toast.terr{background:var(--red)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="loginScreen">
+  <div class="ls-trophy">🏆</div>
+  <div class="ls-brand">Sports Factory<br>Ranchi</div>
+  <div class="ls-sub">Inventory Management System</div>
+  <div class="ls-card">
+    <div class="pin-hint">🔐 Enter 4-Digit PIN</div>
+    <div class="pin-dots">
+      <div class="pdot" id="d0"></div><div class="pdot" id="d1"></div>
+      <div class="pdot" id="d2"></div><div class="pdot" id="d3"></div>
+    </div>
+    <div class="pin-grid">
+      <button class="pkey" onclick="pp(1)">1</button>
+      <button class="pkey" onclick="pp(2)">2</button>
+      <button class="pkey" onclick="pp(3)">3</button>
+      <button class="pkey" onclick="pp(4)">4</button>
+      <button class="pkey" onclick="pp(5)">5</button>
+      <button class="pkey" onclick="pp(6)">6</button>
+      <button class="pkey" onclick="pp(7)">7</button>
+      <button class="pkey" onclick="pp(8)">8</button>
+      <button class="pkey" onclick="pp(9)">9</button>
+      <button class="pkey del" onclick="pb()"><i class="fa fa-delete-left"></i></button>
+      <button class="pkey" onclick="pp(0)">0</button>
+      <button class="pkey ok" onclick="pe()"><i class="fa fa-check"></i></button>
+    </div>
+    <div class="pin-err" id="pinErr"></div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-left">
+        <div class="hdr-logo">🏆</div>
+        <div class="hdr-title">Sports Factory Ranchi<small id="locLabel">Warehouse View</small></div>
+      </div>
+      <div class="hdr-right">
+        <!-- FIXED: backup system — quick-access icons in header -->
+        <button class="hdr-icon-btn" onclick="exportBackup()" title="📥 Download Backup"><i class="fa fa-download"></i></button>
+        <button class="hdr-icon-btn" onclick="document.getElementById('importFileHdr').click()" title="📤 Restore Backup"><i class="fa fa-upload"></i></button>
+        <!-- hidden file input for header import button -->
+        <input type="file" id="importFileHdr" accept=".json" style="display:none" onchange="importBackup(event)"/>
+        <button class="hdr-icon-btn" onclick="openCatModal()" title="🏷️ Categories"><i class="fa fa-tags"></i></button>
+        <button class="hdr-icon-btn" onclick="logout()" title="Logout"><i class="fa fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+    <div class="loc-bar">
+      <button class="loc-tab active" id="tabWH"  onclick="setLoc('warehouse')">🏭 Warehouse</button>
+      <button class="loc-tab"        id="tabGD"  onclick="setLoc('godown')">📦 Godown</button>
+      <button class="loc-tab"        id="tabALL" onclick="setLoc('all')">🌐 All</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- STAT CARDS -->
+    <div class="stat-row">
+      <div class="stat-card sc-blue">
+        <span class="sc-icon">👕</span>
+        <div class="sc-num" id="dTotal">0</div>
+        <div class="sc-lbl">Total Items</div>
+      </div>
+      <div class="stat-card sc-red">
+        <span class="sc-icon">🔴</span>
+        <div class="sc-num" id="dLow">0</div>
+        <div class="sc-lbl">Low Stock</div>
+      </div>
+      <div class="stat-card sc-amber">
+        <span class="sc-icon">🟡</span>
+        <div class="sc-num" id="dWarn">0</div>
+        <div class="sc-lbl">Warning</div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="qa-grid">
+      <button class="qa-card qa-add" onclick="openAddModal()">
+        <div class="qa-ico">➕</div>
+        <div class="qa-txt"><b>Add Item</b><small>New stock entry</small></div>
+      </button>
+      <button class="qa-card qa-cats" onclick="openCatModal()">
+        <div class="qa-ico">🏷️</div>
+        <div class="qa-txt"><b>Categories</b><small>Add &amp; manage</small></div>
+      </button>
+    </div>
+
+    <!-- FIXED: backup system — prominent backup/restore row -->
+    <div class="backup-row">
+      <button class="bk-btn bk-export" onclick="exportBackup()">
+        <div class="bk-ico"><i class="fa fa-download"></i></div>
+        <div class="bk-txt"><b>📥 Backup</b><small>Download data</small></div>
+      </button>
+      <button class="bk-btn bk-import" onclick="document.getElementById('importFileMain').click()">
+        <div class="bk-ico"><i class="fa fa-upload"></i></div>
+        <div class="bk-txt"><b>📤 Restore</b><small>Import backup</small></div>
+      </button>
+      <!-- hidden file input for main backup button -->
+      <input type="file" id="importFileMain" accept=".json" style="display:none" onchange="importBackup(event)"/>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+      <i class="fa fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search items by name…" oninput="renderItems()"/>
+    </div>
+
+    <!-- PILLS -->
+    <div class="pills-wrap" id="catPills"></div>
+
+    <!-- SORT -->
+    <div class="sort-row">
+      <label><i class="fa fa-sort"></i> Sort:</label>
+      <select id="sortSel" class="finput" style="padding:8px 12px;width:auto" onchange="renderItems()">
+        <option value="name">Name A–Z</option>
+        <option value="high">Highest Stock</option>
+        <option value="low">Lowest Stock</option>
+        <option value="recent">Recently Added</option>
+      </select>
+      <span class="count-chip" id="resultCount">0 items</span>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="sec-hdr">
+      <h2>📦 Stock Items</h2>
+      <span id="locSpan">Warehouse View</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="items-grid" id="itemsGrid"></div>
+    <div id="emptyState" class="empty" style="display:none">
+      <span class="ei">📭</span>
+      <p>No items found.<br>Tap <b>Add Item</b> to get started!</p>
+    </div>
+
+  </div>
+
+  <button class="fab" onclick="openAddModal()"><i class="fa fa-plus"></i> Add Item</button>
+</div>
+
+<!-- ══════════════ ADD / EDIT MODAL ══════════════ -->
+<div class="modal-ov" id="itemModal">
+<div class="modal">
+  <div class="m-handle"></div>
+  <div class="m-title" id="itemModalTitle">➕ Add New Item</div>
+
+  <!-- FIXED: auto-save draft — draft restore banner -->
+  <div class="draft-banner" id="draftBanner">
+    <i class="fa fa-clock-rotate-left"></i>
+    <span>Draft restored from last session</span>
+    <button onclick="discardDraft()" style="margin-left:auto;background:none;color:#7c5c00;font-size:.72rem;font-weight:700;text-decoration:underline">Discard</button>
+  </div>
+
+  <div class="fg">
+    <label class="flbl">Item Name</label>
+    <!-- FIXED: auto-save draft — oninput triggers saveDraft() -->
+    <input type="text" class="finput" id="fName" placeholder="e.g. Nike Dri-FIT Shirt" oninput="saveDraft()"/>
+  </div>
+
+  <div class="fg">
+    <label class="flbl">Category
+      <span style="font-weight:500;text-transform:none;letter-spacing:0;margin-left:6px;color:var(--blue2);font-size:.68rem;cursor:pointer" onclick="goToCatModal()">
+        ＋ Manage categories
+      </span>
+    </label>
+    <!-- FIXED: auto-save draft — onchange triggers saveDraft() -->
+    <select class="finput" id="fCat" onchange="saveDraft()">
+      <option value="">-- Select Category --</option>
+    </select>
+  </div>
+
+  <div class="fg">
+    <label class="flbl">Item Photo</label>
+    <div id="imgZone" class="img-zone" onclick="triggerFile()">
+      <i class="fa fa-image"></i><p>Tap to upload a photo</p>
+    </div>
+    <div id="imgPrevWrap" style="display:none" class="img-prev-wrap">
+      <img id="imgPrev" class="img-prev" src="" alt="preview"/>
+      <button class="img-rm" onclick="removeImg()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="upbtns">
+      <button class="upbtn" onclick="triggerFile()"><i class="fa fa-upload"></i> Upload</button>
+      <button class="upbtn" onclick="openCam()"><i class="fa fa-camera"></i> Camera</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(event)"/>
+  </div>
+
+  <div class="s-band">🏭 Warehouse Stock — Size-wise</div>
+  <div class="fg">
+    <div class="si-grid">
+      <!-- FIXED: auto-save draft + input validation — oninput on all stock fields -->
+      <div class="si-wrap"><label>S</label>  <input type="number" id="wS"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>M</label>  <input type="number" id="wM"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>L</label>  <input type="number" id="wL"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>XL</label> <input type="number" id="wXL"  min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>XXL</label><input type="number" id="wXXL" min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+    </div>
+  </div>
+
+  <div class="s-band">📦 Godown Stock — Size-wise</div>
+  <div class="fg">
+    <div class="si-grid">
+      <div class="si-wrap"><label>S</label>  <input type="number" id="gS"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>M</label>  <input type="number" id="gM"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>L</label>  <input type="number" id="gL"   min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>XL</label> <input type="number" id="gXL"  min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+      <div class="si-wrap"><label>XXL</label><input type="number" id="gXXL" min="0" value="0" oninput="calcTotal();saveDraft()"/></div>
+    </div>
+  </div>
+
+  <div class="fg">
+    <label class="flbl">Total Stock (Auto Calculated)</label>
+    <input type="text" class="finput" id="fTotal" readonly value="0"/>
+  </div>
+  <div class="fbtns">
+    <button class="btn-p" onclick="saveItem()"><i class="fa fa-save"></i> Save Item</button>
+    <!-- FIXED: prevent data loss — cancel calls safeCloseItemModal() -->
+    <button class="btn-s" onclick="safeCloseItemModal()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════ CATEGORY MODAL ══════════════ -->
+<div class="modal-ov" id="catModal">
+<div class="modal">
+  <div class="m-handle"></div>
+  <div class="m-title">🏷️ Manage Categories</div>
+  <!-- FIXED: category limit — shows remaining count -->
+  <div class="cat-count-tip" id="catCountTip">0 categories</div>
+  <div class="cat-list" id="catList"></div>
+  <label class="flbl" style="margin-bottom:10px">➕ Add New Category</label>
+  <div class="add-cat-row">
+    <select id="newCatEmoji" class="emoji-pick">
+      <option>👔</option><option>👕</option><option>👟</option>
+      <option>🩳</option><option>🧥</option><option>🏃</option>
+      <option>🎒</option><option>🧢</option><option>🧤</option>
+      <option>⚽</option><option>🏸</option><option>🥊</option>
+      <option>🎽</option><option>🥿</option><option>🧦</option>
+      <option>🎿</option><option>🏊</option><option>🏋️</option>
+      <option>📦</option><option>🌟</option><option>💪</option>
+      <option>🔵</option><option>🟢</option><option>🟠</option>
+    </select>
+    <input type="text" id="newCatName" class="cat-name-input"
+      placeholder="Category name (e.g. Socks)" maxlength="30"
+      onkeydown="if(event.key==='Enter')addCat()"/>
+    <button class="btn-add-cat" onclick="addCat()"><i class="fa fa-plus"></i> Add</button>
+  </div>
+  <div class="fbtns" style="margin-top:20px">
+    <button class="btn-p" onclick="closeModal('catModal')"><i class="fa fa-check"></i> Done</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════ DELETE CONFIRM ══════════════ -->
+<div class="modal-ov" id="confirmModal">
+<div class="modal" style="max-width:360px">
+  <div class="m-handle"></div>
+  <span class="conf-ico">🗑️</span>
+  <div class="m-title" style="justify-content:center">Delete Item?</div>
+  <p class="conf-msg">This cannot be undone.<br>Are you sure you want to delete this item?</p>
+  <div class="fbtns">
+    <button class="btn-p" style="background:linear-gradient(135deg,#b71c1c,#e53935);box-shadow:0 4px 16px rgba(183,28,28,.3)" onclick="confirmDelete()">
+      <i class="fa fa-trash"></i> Yes, Delete
+    </button>
+    <button class="btn-s" onclick="closeModal('confirmModal')">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════ DETAIL MODAL ══════════════ -->
+<div class="modal-ov" id="detailModal">
+<div class="modal" style="max-width:440px">
+  <div class="m-handle"></div>
+  <div id="detailContent"></div>
+  <button class="btn-s" style="width:100%;margin-top:10px" onclick="closeModal('detailModal')">Close</button>
+</div>
+</div>
+
+<!-- ══════════════ CAMERA MODAL ══════════════ -->
+<div class="modal-ov" id="cameraModal">
+<div class="modal" style="max-width:420px">
+  <div class="m-handle"></div>
+  <div class="m-title">📸 Take Photo</div>
+  <div class="cam-wrap">
+    <video id="camVideo" autoplay playsinline></video>
+    <canvas id="camCanvas" style="display:none"></canvas>
+  </div>
+  <div class="cam-btns">
+    <button class="cam-shoot" onclick="shootPhoto()"><i class="fa fa-camera"></i> Capture</button>
+    <button class="cam-cancel" onclick="closeCam()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT — All fixes applied
+══════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ════════════════════════════════════════════════
+   CONFIG
+════════════════════════════════════════════════ */
+const CORRECT_PIN   = '1234'; // ← change your PIN here
+const SIZES         = ['S','M','L','XL','XXL'];
+const MAX_CATS      = 20; // FIXED: category limit
+const CARD_COLORS   = [
+  '#002970','#1565c0','#0097a7','#00875a',
+  '#e65100','#6200ea','#c62828','#f59f00',
+  '#00695c','#37474f','#ad1457','#4527a0',
+  '#1b5e20','#880e4f','#0d47a1','#bf360c'
+];
+const DEFAULT_CATS  = [
+  {name:'Shirt',emoji:'👔'},{name:'T-Shirt',emoji:'👕'},{name:'Shoes',emoji:'👟'},
+  {name:'Shorts',emoji:'🩳'},{name:'Jacket',emoji:'🧥'},{name:'Tracksuit',emoji:'🏃'},
+  {name:'Accessories',emoji:'🎒'},{name:'Other',emoji:'📦'}
+];
+
+/* ════════════════════════════════════════════════
+   FIX 1 — SAFE LOCALSTORAGE PARSING
+   Every JSON.parse is wrapped in try-catch.
+   Corrupted data → returns null → triggers seed.
+════════════════════════════════════════════════ */
+function safeGetStorage(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    // corrupted JSON — log and return null to trigger re-seed
+    console.warn('[SFR] Corrupt storage key "' + key + '". Resetting.', e.message);
+    return null;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   STATE — loaded via safe parser
+════════════════════════════════════════════════ */
+let items      = safeGetStorage('sfr_items');      // FIX 1 applied
+let categories = safeGetStorage('sfr_cats');       // FIX 1 applied
+let currentLoc = 'warehouse';
+let currentCat = 'All';
+let editingId  = null;
+let deleteId   = null;
+let currentImg = null;
+let camStream  = null;
+let pinEntry   = '';
+let draftActive = false; // FIX 7 & 9 — tracks whether item modal has user input
+
+/* seed defaults if storage was empty or corrupt */
+if (!categories || !Array.isArray(categories)) {
+  categories = JSON.parse(JSON.stringify(DEFAULT_CATS));
+  saveCats();
+}
+if (!items || !Array.isArray(items)) {
+  items = [
+    { id:'demo_1', name:'Nike Dri-FIT Shirt',  category:'Shirt',
+      warehouse:{S:5,M:8,L:12,XL:6,XXL:3},  godown:{S:10,M:15,L:20,XL:10,XXL:5},
+      image:null, createdAt:Date.now()-10000 },
+    { id:'demo_2', name:'Puma Running Shoes',  category:'Shoes',
+      warehouse:{S:0,M:4,L:3,XL:2,XXL:0},   godown:{S:0,M:2,L:1,XL:0,XXL:0},
+      image:null, createdAt:Date.now()-5000 },
+    { id:'demo_3', name:'Adidas Track Jacket', category:'Jacket',
+      warehouse:{S:1,M:2,L:1,XL:1,XXL:0},   godown:{S:0,M:1,L:2,XL:1,XXL:0},
+      image:null, createdAt:Date.now()-2000 },
+  ];
+  saveItems();
+}
+
+/* ════════════════════════════════════════════════
+   PERSIST — try-catch guards storage-full errors
+════════════════════════════════════════════════ */
+function saveItems() {
+  try {
+    localStorage.setItem('sfr_items', JSON.stringify(items));
+  } catch(e) {
+    // FIX 3 side-effect guard: storage full = images too large
+    toast('⚠️ Storage full! Export a backup then delete old items.', 'terr');
+  }
+}
+function saveCats() {
+  try {
+    localStorage.setItem('sfr_cats', JSON.stringify(categories));
+  } catch(e) {
+    toast('⚠️ Storage error saving categories.', 'terr');
+  }
+}
+
+/* ════════════════════════════════════════════════
+   FIX 2A — EXPORT BACKUP (Download JSON file)
+   Downloads items + categories as dated .json file.
+════════════════════════════════════════════════ */
+function exportBackup() {
+  try {
+    const backup = {
+      exportedAt:  new Date().toISOString(),
+      appVersion:  'SFR-v3',
+      items:       items,
+      categories:  categories
+    };
+    const json    = JSON.stringify(backup, null, 2);
+    const blob    = new Blob([json], { type: 'application/json' });
+    const url     = URL.createObjectURL(blob);
+    const a       = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10); // e.g. 2024-07-15
+    a.href        = url;
+    a.download    = 'sfr-backup-' + dateStr + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('📥 Backup downloaded! (' + items.length + ' items)', 'tok');
+  } catch(e) {
+    toast('❌ Export failed: ' + e.message, 'terr');
+  }
+}
+
+/* ════════════════════════════════════════════════
+   FIX 2B — IMPORT BACKUP (Restore from JSON file)
+   Reads uploaded .json, validates structure,
+   confirms with user, then replaces live data.
+════════════════════════════════════════════════ */
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  event.target.value = ''; // reset so same file can be re-imported
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    let data;
+    // FIX 1 applied here too — safe parse of imported file
+    try {
+      data = JSON.parse(e.target.result);
+    } catch(parseErr) {
+      toast('❌ Invalid file — could not read JSON.', 'terr');
+      return;
+    }
+
+    // validate minimum structure
+    if (!data || !Array.isArray(data.items)) {
+      toast('❌ Invalid backup file — no items found.', 'terr');
+      return;
+    }
+
+    const itemCount = data.items.length;
+    const catCount  = Array.isArray(data.categories) ? data.categories.length : 0;
+
+    // confirm before overwriting all live data
+    if (!confirm(
+      '⚠️ RESTORE BACKUP?\n\n' +
+      'This will replace ALL current data with:\n' +
+      '• ' + itemCount + ' items\n' +
+      '• ' + catCount + ' categories\n\n' +
+      'Your current data will be overwritten.\n' +
+      'Continue?'
+    )) return;
+
+    items      = data.items;
+    categories = Array.isArray(data.categories)
+      ? data.categories
+      : JSON.parse(JSON.stringify(DEFAULT_CATS));
+
+    saveItems();
+    saveCats();
+    renderAll();
+    toast('✅ Restored! ' + itemCount + ' items loaded.', 'tok');
+  };
+
+  reader.onerror = function() {
+    toast('❌ Could not read file.', 'terr');
+  };
+
+  reader.readAsText(file);
+}
+
+/* ════════════════════════════════════════════════
+   FIX 6 — INPUT VALIDATION
+   Math.max(0, parseInt(v) || 0) — no negative, no NaN
+════════════════════════════════════════════════ */
+function safeInt(val) {
+  return Math.max(0, parseInt(val) || 0);
+}
+
+/* ════════════════════════════════════════════════
+   PIN LOGIN
+════════════════════════════════════════════════ */
+function pp(n) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += n;
+  updDots();
+  if (pinEntry.length === 4) setTimeout(pe, 150);
+}
+function pb() {
+  pinEntry = pinEntry.slice(0, -1);
+  updDots();
+}
+function updDots() {
+  for (let i = 0; i < 4; i++)
+    document.getElementById('d'+i).classList.toggle('on', i < pinEntry.length);
+}
+function pe() {
+  if (pinEntry === CORRECT_PIN) {
+    document.getElementById('loginScreen').style.display = 'none';
+    const a = document.getElementById('app');
+    a.style.display = 'flex';
+    a.style.flexDirection = 'column';
+    renderAll();
+    // FIX 9 — notify user if a draft exists from previous session
+    checkDraftOnLogin();
+  } else {
+    document.getElementById('pinErr').textContent = '❌ Wrong PIN. Try again.';
+    pinEntry = '';
+    updDots();
+    setTimeout(() => document.getElementById('pinErr').textContent = '', 2200);
+  }
+}
+function logout() {
+  pinEntry = '';
+  updDots();
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+/* ════════════════════════════════════════════════
+   LOCATION
+════════════════════════════════════════════════ */
+function setLoc(loc) {
+  currentLoc = loc;
+  ['WH','GD','ALL'].forEach(k => document.getElementById('tab'+k).classList.remove('active'));
+  document.getElementById(loc==='warehouse'?'tabWH':loc==='godown'?'tabGD':'tabALL').classList.add('active');
+  const lbl = {warehouse:'Warehouse View', godown:'Godown View', all:'All Locations'}[loc];
+  document.getElementById('locLabel').textContent = lbl;
+  document.getElementById('locSpan').textContent  = lbl;
+  renderItems();
+}
+
+/* ════════════════════════════════════════════════
+   STOCK HELPERS
+════════════════════════════════════════════════ */
+function locStock(item, loc) {
+  const s = loc === 'warehouse' ? item.warehouse : item.godown;
+  if (!s) return 0;
+  return SIZES.reduce((a, sz) => a + (safeInt(s[sz])), 0); // FIX 6 applied
+}
+function dispStock(item) {
+  if (currentLoc === 'all') return locStock(item,'warehouse') + locStock(item,'godown');
+  return locStock(item, currentLoc);
+}
+function totalStock(item) { return locStock(item,'warehouse') + locStock(item,'godown'); }
+function stockSt(n)       { return n < 10 ? 'low' : n <= 20 ? 'warn' : 'ok'; }
+
+/* ════════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════════ */
+function renderAll()  { renderDash(); renderPills(); renderItems(); }
+function renderDash() {
+  document.getElementById('dTotal').textContent = items.length;
+  document.getElementById('dLow').textContent   = items.filter(i => totalStock(i) < 10).length;
+  document.getElementById('dWarn').textContent  = items.filter(i => { const t=totalStock(i); return t>=10&&t<=20; }).length;
+}
+
+function renderPills() {
+  let h = `<button class="pill${currentCat==='All'?' active':''}" onclick="setCat('All')">All</button>`;
+  categories.forEach(c => {
+    const esc = c.name.replace(/'/g, "&#39;");
+    h += `<button class="pill${currentCat===c.name?' active':''}" onclick="setCat('${esc}')">${c.emoji} ${c.name}</button>`;
+  });
+  h += `<button class="pill p-low${currentCat==='LOW'?' active':''}" onclick="setCat('LOW')">🔴 Low Stock</button>`;
+  document.getElementById('catPills').innerHTML = h;
+}
+function setCat(cat) { currentCat = cat; renderPills(); renderItems(); }
+
+function renderItems() {
+  const q  = document.getElementById('searchInput').value.toLowerCase();
+  const st = document.getElementById('sortSel').value;
+
+  let list = items.filter(item => {
+    if (q && !item.name.toLowerCase().includes(q)) return false;
+    if (currentCat === 'LOW') return totalStock(item) < 10;
+    if (currentCat !== 'All' && item.category !== currentCat) return false;
+    return true;
+  });
+
+  list.sort((a, b) => {
+    if (st === 'name')   return a.name.localeCompare(b.name);
+    if (st === 'high')   return dispStock(b) - dispStock(a);
+    if (st === 'low')    return dispStock(a) - dispStock(b);
+    // FIX 4 — use createdAt (not id) for recent sort
+    if (st === 'recent') return (b.createdAt || 0) - (a.createdAt || 0);
+    return 0;
+  });
+
+  document.getElementById('resultCount').textContent = list.length + ' item' + (list.length !== 1 ? 's' : '');
+  const grid = document.getElementById('itemsGrid');
+  const emp  = document.getElementById('emptyState');
+
+  if (!list.length) { grid.innerHTML = ''; emp.style.display = 'block'; return; }
+  emp.style.display = 'none';
+
+  grid.innerHTML = list.map(item => {
+    const ds    = dispStock(item), ts = totalStock(item), s2 = stockSt(ts);
+    const locSz = currentLoc === 'godown' ? item.godown : item.warehouse;
+    const bCls  = s2==='low'?'sb-low': s2==='warn'?'sb-warn':'sb-ok';
+    const bIco  = s2==='low'?'🔴': s2==='warn'?'🟡':'🟢';
+    const bTxt  = s2==='low'?'Low Stock': s2==='warn'?'Warning':'In Stock';
+    const ci    = categories.findIndex(c => c.name === item.category);
+    const color = CARD_COLORS[(ci >= 0 ? ci : 0) % CARD_COLORS.length];
+    const co    = categories.find(c => c.name === item.category);
+    const em    = co ? co.emoji : '📦';
+    const locVal = sz => currentLoc === 'all'
+      ? (safeInt(item.warehouse[sz]) + safeInt(item.godown[sz]))   // FIX 6
+      : safeInt(locSz ? locSz[sz] : 0);                            // FIX 6
+
+    return `
+    <div class="item-card" onclick="showDetail('${item.id}')">
+      <div class="card-bar" style="background:${color}"></div>
+      ${item.image
+        ? `<div class="card-img-box"><img class="card-img" src="${item.image}" alt="${item.name}"/></div>`
+        : `<div class="card-img-box"><div class="card-ph">${em}</div></div>`}
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        <div class="card-cat" style="color:${color}">${item.category}</div>
+        <div class="sbadge ${bCls}">${bIco} ${bTxt} · ${ds}</div>
+        <div class="sz-row">${SIZES.map(sz=>`
+          <div class="sz-cell">
+            <span class="szl">${sz}</span>
+            <span class="szv">${locVal(sz)}</span>
+          </div>`).join('')}</div>
+        <div class="card-btns" onclick="event.stopPropagation()">
+          <button class="cbtn cbe" onclick="openEditModal('${item.id}')">✏️ Edit</button>
+          <button class="cbtn cbd" onclick="askDelete('${item.id}')">🗑️ Del</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   MODALS
+════════════════════════════════════════════════ */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// FIX 7 — intercept overlay-click on itemModal to check unsaved changes
+document.querySelectorAll('.modal-ov').forEach(ov => {
+  ov.addEventListener('click', e => {
+    if (e.target !== ov) return;
+    if (ov.id === 'itemModal') {
+      safeCloseItemModal(); // will ask "unsaved changes?" if needed
+    } else if (ov.id === 'cameraModal') {
+      closeCam();
+    } else {
+      ov.classList.remove('open');
+    }
+  });
+});
+
+/* ════════════════════════════════════════════════
+   FIX 7 — PREVENT DATA LOSS ON MODAL CLOSE
+   Detects if user has typed anything meaningful,
+   then confirms before discarding.
+════════════════════════════════════════════════ */
+function hasUnsavedChanges() {
+  if (!draftActive || editingId !== null) return false; // only for NEW items
+  if (document.getElementById('fName').value.trim()) return true;
+  if (document.getElementById('fCat').value) return true;
+  if (currentImg) return true;
+  for (const sz of SIZES) {
+    if (safeInt(document.getElementById('w'+sz).value) > 0) return true;
+    if (safeInt(document.getElementById('g'+sz).value) > 0) return true;
+  }
+  return false;
+}
+
+function safeCloseItemModal() {
+  if (hasUnsavedChanges()) {
+    if (!confirm('⚠️ Unsaved changes will be lost.\n\nContinue without saving?')) {
+      return; // user pressed Cancel → keep modal open
+    }
+  }
+  clearDraft();
+  draftActive = false;
+  closeModal('itemModal');
+}
+
+// helper used by "Manage categories" link inside item modal
+function goToCatModal() {
+  // close item modal without warning (data stays in draft)
+  closeModal('itemModal');
+  openCatModal();
+}
+
+/* ════════════════════════════════════════════════
+   ADD / EDIT ITEM
+════════════════════════════════════════════════ */
+function openAddModal() {
+  editingId = null;
+  currentImg = null;
+  document.getElementById('itemModalTitle').textContent = '➕ Add New Item';
+  document.getElementById('fName').value = '';
+  populateCatSelect('');
+  SIZES.forEach(sz => {
+    document.getElementById('w'+sz).value = 0;
+    document.getElementById('g'+sz).value = 0;
+  });
+  document.getElementById('fTotal').value = '0';
+  document.getElementById('imgZone').style.display = 'block';
+  document.getElementById('imgPrevWrap').style.display = 'none';
+  draftActive = true;
+  // FIX 9 — restore draft if one exists
+  restoreDraft();
+  openModal('itemModal');
+}
+
+function openEditModal(id) {
+  const item = items.find(i => i.id == id); // intentional == for mixed types
+  if (!item) return;
+  editingId = id;
+  currentImg = item.image || null;
+  document.getElementById('itemModalTitle').textContent = '✏️ Edit Item';
+  document.getElementById('fName').value = item.name;
+  populateCatSelect(item.category);
+  // FIX 6 — use safeInt when loading existing values
+  SIZES.forEach(sz => {
+    document.getElementById('w'+sz).value = safeInt(item.warehouse ? item.warehouse[sz] : 0);
+    document.getElementById('g'+sz).value = safeInt(item.godown    ? item.godown[sz]    : 0);
+  });
+  calcTotal();
+  if (currentImg) {
+    document.getElementById('imgPrev').src = currentImg;
+    document.getElementById('imgPrevWrap').style.display = 'inline-block';
+    document.getElementById('imgZone').style.display = 'none';
+  } else {
+    document.getElementById('imgZone').style.display = 'block';
+    document.getElementById('imgPrevWrap').style.display = 'none';
+  }
+  // hide draft banner for edits (draft is only for new items)
+  document.getElementById('draftBanner').classList.remove('show');
+  draftActive = true;
+  openModal('itemModal');
+}
+
+function populateCatSelect(selected) {
+  const sel = document.getElementById('fCat');
+  sel.innerHTML = '<option value="">-- Select Category --</option>';
+  categories.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c.name;
+    o.textContent = c.emoji + ' ' + c.name;
+    if (c.name === selected) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+function calcTotal() {
+  let t = 0;
+  // FIX 6 — safeInt prevents negative/NaN from corrupting total
+  SIZES.forEach(sz => {
+    t += safeInt(document.getElementById('w'+sz).value);
+    t += safeInt(document.getElementById('g'+sz).value);
+  });
+  document.getElementById('fTotal').value = t;
+}
+
+function saveItem() {
+  const name = document.getElementById('fName').value.trim();
+  const cat  = document.getElementById('fCat').value;
+  if (!name) { toast('❌ Please enter item name', 'terr'); return; }
+  if (!cat)  { toast('❌ Please select a category', 'terr'); return; }
+
+  const wh = {}, gd = {};
+  // FIX 6 — safeInt on every stock field before saving
+  SIZES.forEach(sz => {
+    wh[sz] = safeInt(document.getElementById('w'+sz).value);
+    gd[sz] = safeInt(document.getElementById('g'+sz).value);
+  });
+
+  if (editingId) {
+    const idx = items.findIndex(x => x.id == editingId);
+    if (idx !== -1) {
+      items[idx] = { ...items[idx], name, category:cat, warehouse:wh, godown:gd, image:currentImg };
+    }
+    toast('✅ Item updated!', 'tok');
+  } else {
+    // FIX 5 — unique ID using timestamp + random to avoid collision
+    const newId = Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+    items.push({
+      id: newId,
+      name, category: cat,
+      warehouse: wh, godown: gd,
+      image: currentImg,
+      createdAt: Date.now()  // FIX 4 — store createdAt for correct sort
+    });
+    toast('✅ Item added!', 'tok');
+  }
+
+  clearDraft();
+  draftActive = false;
+  saveItems();
+  closeModal('itemModal');
+  renderAll();
+}
+
+/* ════════════════════════════════════════════════
+   DELETE
+════════════════════════════════════════════════ */
+function askDelete(id) { deleteId = id; openModal('confirmModal'); }
+function confirmDelete() {
+  items = items.filter(i => i.id != deleteId);
+  saveItems();
+  closeModal('confirmModal');
+  renderAll();
+  toast('🗑️ Item deleted', 'terr');
+  deleteId = null;
+}
+
+/* ════════════════════════════════════════════════
+   FIX 8 — CATEGORY LIMIT (max 20)
+   + full category CRUD (add / delete)
+════════════════════════════════════════════════ */
+function openCatModal() { renderCatList(); openModal('catModal'); }
+
+function renderCatList() {
+  const remaining = MAX_CATS - categories.length;
+  document.getElementById('catCountTip').textContent =
+    categories.length + ' categor' + (categories.length === 1 ? 'y' : 'ies') +
+    ' · ' + remaining + ' of ' + MAX_CATS + ' slots remaining';
+
+  const el = document.getElementById('catList');
+  if (!categories.length) {
+    el.innerHTML = '<div class="no-cats">No categories yet. Add one below!</div>';
+    return;
+  }
+  el.innerHTML = categories.map((c, i) => `
+    <div class="cat-row">
+      <span class="cat-em">${c.emoji}</span>
+      <span class="cat-nm">${c.name}</span>
+      <button class="cat-del" onclick="deleteCat(${i})" title="Delete category">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>`).join('');
+}
+
+function addCat() {
+  const emoji = document.getElementById('newCatEmoji').value;
+  const name  = document.getElementById('newCatName').value.trim();
+
+  if (!name) { toast('❌ Enter a category name', 'terr'); return; }
+
+  // FIX 8 — hard limit at MAX_CATS
+  if (categories.length >= MAX_CATS) {
+    toast('⛔ Max ' + MAX_CATS + ' categories. Delete unused ones first.', 'terr');
+    return;
+  }
+
+  if (categories.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast('⚠️ "' + name + '" already exists', 'terr');
+    return;
+  }
+
+  categories.push({ name, emoji });
+  saveCats();
+  document.getElementById('newCatName').value = '';
+  renderCatList();
+  renderPills();
+  toast('✅ "' + name + '" added!', 'tok');
+}
+
+function deleteCat(idx) {
+  const cat = categories[idx];
+  if (items.some(i => i.category === cat.name)) {
+    toast('⚠️ "' + cat.name + '" is used by items — reassign them first', 'terr');
+    return;
+  }
+  categories.splice(idx, 1);
+  saveCats();
+  renderCatList();
+  renderPills();
+  renderItems();
+  toast('🗑️ "' + cat.name + '" removed', 'terr');
+}
+
+/* ════════════════════════════════════════════════
+   FIX 3 — IMAGE COMPRESSION
+   Resize to max 500px wide, JPEG quality 0.6.
+   Applied to BOTH file upload AND camera capture.
+   Keeps base64 size small → prevents storage-full errors.
+════════════════════════════════════════════════ */
+function compressImage(dataUrl, callback) {
+  const img = new Image();
+  img.onload = function() {
+    const MAX_W = 500;
+    let w = img.width, h = img.height;
+
+    // only scale down if image is wider than MAX_W
+    if (w > MAX_W) {
+      h = Math.round((h * MAX_W) / w);
+      w = MAX_W;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width  = w;
+    canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+    // JPEG quality 0.6 — ~10× smaller than PNG, visually acceptable
+    const compressed = canvas.toDataURL('image/jpeg', 0.6);
+    callback(compressed);
+  };
+  img.onerror = function() {
+    // compression failed — use original rather than breaking the flow
+    console.warn('[SFR] Image compression failed, using original.');
+    callback(dataUrl);
+  };
+  img.src = dataUrl;
+}
+
+function triggerFile() { document.getElementById('fileInput').click(); }
+
+// FIX 3 — compress on file upload before preview/storage
+function handleFile(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  e.target.value = ''; // allow re-selecting same file
+  const reader = new FileReader();
+  reader.onload = ev => {
+    compressImage(ev.target.result, function(compressed) {
+      setPreview(compressed);
+      saveDraft(); // FIX 9 — persist image in draft
+    });
+  };
+  reader.readAsDataURL(f);
+}
+
+function setPreview(src) {
+  currentImg = src;
+  document.getElementById('imgPrev').src = src;
+  document.getElementById('imgPrevWrap').style.display = 'inline-block';
+  document.getElementById('imgZone').style.display = 'none';
+}
+function removeImg() {
+  currentImg = null;
+  document.getElementById('imgPrevWrap').style.display = 'none';
+  document.getElementById('imgZone').style.display = 'block';
+  saveDraft(); // FIX 9 — update draft when image removed
+}
+
+/* ════════════════════════════════════════════════
+   CAMERA
+════════════════════════════════════════════════ */
+async function openCam() {
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }, audio: false
+    });
+    document.getElementById('camVideo').srcObject = camStream;
+    openModal('cameraModal');
+  } catch(e) {
+    toast('📷 Camera not available', 'terr');
+  }
+}
+function shootPhoto() {
+  const v = document.getElementById('camVideo');
+  const c = document.getElementById('camCanvas');
+  c.width  = v.videoWidth;
+  c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  closeCam();
+  // FIX 3 — compress camera photo too (same pipeline as file upload)
+  compressImage(c.toDataURL('image/jpeg', 1.0), function(compressed) {
+    setPreview(compressed);
+    saveDraft(); // FIX 9
+  });
+}
+function closeCam() {
+  if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+  closeModal('cameraModal');
+}
+
+/* ════════════════════════════════════════════════
+   FIX 9 — AUTO-SAVE DRAFT
+   Saves form state while user types (new items only).
+   Restores when Add Item is reopened.
+   Cleared on save or explicit discard.
+════════════════════════════════════════════════ */
+function saveDraft() {
+  if (editingId !== null) return;  // only for new items, not edits
+  if (!draftActive) return;
+
+  const draft = {
+    name:  document.getElementById('fName').value,
+    cat:   document.getElementById('fCat').value,
+    image: currentImg,
+    wh: {},
+    gd: {}
+  };
+  SIZES.forEach(sz => {
+    draft.wh[sz] = safeInt(document.getElementById('w'+sz).value);
+    draft.gd[sz] = safeInt(document.getElementById('g'+sz).value);
+  });
+
+  try {
+    localStorage.setItem('sfr_draft', JSON.stringify(draft));
+  } catch(e) {
+    // draft save is non-critical — silently skip if storage full
+  }
+}
+
+function restoreDraft() {
+  const saved = safeGetStorage('sfr_draft'); // FIX 1 applied
+  if (!saved) return;
+
+  // only restore if there's meaningful content
+  const hasContent =
+    saved.name ||
+    saved.cat  ||
+    saved.image ||
+    SIZES.some(sz => (saved.wh && saved.wh[sz] > 0) || (saved.gd && saved.gd[sz] > 0));
+  if (!hasContent) return;
+
+  // show draft restored banner
+  document.getElementById('draftBanner').classList.add('show');
+
+  // populate fields
+  if (saved.name) document.getElementById('fName').value = saved.name;
+  if (saved.cat)  populateCatSelect(saved.cat);
+  if (saved.image) {
+    currentImg = saved.image;
+    document.getElementById('imgPrev').src = saved.image;
+    document.getElementById('imgPrevWrap').style.display = 'inline-block';
+    document.getElementById('imgZone').style.display = 'none';
+  }
+  if (saved.wh) SIZES.forEach(sz => { document.getElementById('w'+sz).value = safeInt(saved.wh[sz]); });
+  if (saved.gd) SIZES.forEach(sz => { document.getElementById('g'+sz).value = safeInt(saved.gd[sz]); });
+  calcTotal();
+}
+
+function discardDraft() {
+  clearDraft();
+  // reset all fields
+  document.getElementById('fName').value = '';
+  populateCatSelect('');
+  SIZES.forEach(sz => {
+    document.getElementById('w'+sz).value = 0;
+    document.getElementById('g'+sz).value = 0;
+  });
+  document.getElementById('fTotal').value = '0';
+  currentImg = null;
+  document.getElementById('imgPrevWrap').style.display = 'none';
+  document.getElementById('imgZone').style.display = 'block';
+  document.getElementById('draftBanner').classList.remove('show');
+  toast('🗑️ Draft discarded', '');
+}
+
+function clearDraft() {
+  try { localStorage.removeItem('sfr_draft'); } catch(e) {}
+  document.getElementById('draftBanner').classList.remove('show');
+}
+
+function checkDraftOnLogin() {
+  // FIX 9 — on login, show a non-intrusive hint if draft exists
+  const saved = safeGetStorage('sfr_draft');
+  if (!saved) return;
+  const hasContent =
+    saved.name || saved.cat ||
+    SIZES.some(sz => (saved.wh && saved.wh[sz] > 0) || (saved.gd && saved.gd[sz] > 0));
+  if (hasContent) {
+    // small delay so main UI renders first
+    setTimeout(() => toast('📝 Unsaved draft found — tap Add Item to restore', ''), 800);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   DETAIL VIEW
+════════════════════════════════════════════════ */
+function showDetail(id) {
+  const item = items.find(i => i.id == id);
+  if (!item) return;
+  const wt  = locStock(item, 'warehouse');
+  const gt  = locStock(item, 'godown');
+  const tot = wt + gt;
+  const s2  = stockSt(tot);
+  const bCls = s2==='low'?'sb-low': s2==='warn'?'sb-warn':'sb-ok';
+  const co   = categories.find(c => c.name === item.category);
+  const em   = co ? co.emoji : '📦';
+
+  document.getElementById('detailContent').innerHTML = `
+    ${item.image
+      ? `<img class="det-img" src="${item.image}" alt="${item.name}"/>`
+      : `<div style="font-size:5rem;text-align:center;padding:22px 0;background:#f2f6fc;border-radius:14px;margin-bottom:14px">${em}</div>`}
+    <div class="det-hdr">
+      <div>
+        <div class="det-name">${item.name}</div>
+        <div class="det-cat">${em} ${item.category}</div>
+      </div>
+      <div class="sbadge ${bCls}" style="font-size:.78rem">Total: ${tot}</div>
+    </div>
+    <div style="font-size:.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🏭 Warehouse</div>
+    <div class="det-sg" style="margin-bottom:14px">
+      ${SIZES.map(sz => `<div class="dsz"><span class="dsz-l">${sz}</span><span class="dsz-v">${safeInt(item.warehouse ? item.warehouse[sz] : 0)}</span></div>`).join('')}
+    </div>
+    <div style="font-size:.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📦 Godown</div>
+    <div class="det-sg">
+      ${SIZES.map(sz => `<div class="dsz"><span class="dsz-l">${sz}</span><span class="dsz-v">${safeInt(item.godown ? item.godown[sz] : 0)}</span></div>`).join('')}
+    </div>
+    <div class="loc-pair">
+      <div class="loc-box wh"><div class="loc-box-lbl">🏭 Warehouse</div><div class="loc-box-num">${wt}</div></div>
+      <div class="loc-box gd"><div class="loc-box-lbl">📦 Godown</div><div class="loc-box-num">${gt}</div></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-p" style="flex:1" onclick="closeModal('detailModal');openEditModal('${item.id}')">✏️ Edit</button>
+      <button class="btn-s" style="flex:1;background:#fdecea;color:var(--red)" onclick="closeModal('detailModal');askDelete('${item.id}')">🗑️ Delete</button>
+    </div>`;
+  openModal('detailModal');
+}
+
+/* ════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════ */
+let _tt;
+function toast(msg, cls = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = 'toast show' + (cls ? ' ' + cls : '');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => el.className = 'toast', 2900);
+}
+</script>
+</body>
+</html>
