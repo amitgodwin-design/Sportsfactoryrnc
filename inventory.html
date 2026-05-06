@@ -1,0 +1,2957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sports Factory Ranchi – Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<!-- Firebase compat SDK (global namespace, no module bundler needed) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+(function() {
+  var firebaseConfig = {
+    apiKey: "AIzaSyChRvHcVuHaJVV39Vf8qrT5jBfd8KXKfsA",
+    authDomain: "planning-with-ai-9e006.firebaseapp.com",
+    databaseURL: "https://planning-with-ai-9e006-default-rtdb.firebaseio.com/",
+    projectId: "planning-with-ai-9e006",
+    storageBucket: "planning-with-ai-9e006.firebasestorage.app",
+    messagingSenderId: "385221506114",
+    appId: "1:385221506114:web:d8790ae4c91da7c23469db"
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  window._db = firebase.database();
+})();
+</script>
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#002970;--blue2:#0050c8;--blue3:#1a6fff;--sky:#00b4f0;
+  --green:#00875a;--gbg:#e3fcef;--gtxt:#006644;
+  --red:#d32f2f;--rbg:#fdecea;--rtxt:#b71c1c;
+  --amber:#e65100;--abg:#fff3e0;--atxt:#bf360c;
+  --purple:#5e00d4;
+  --bg:#f0f3fa;--white:#ffffff;
+  --text:#0c1b3a;--text2:#5a6780;
+  --border:#dde4f0;
+  --r:20px;--rs:12px;
+  --sh:0 2px 14px rgba(0,41,112,.08);
+  --shm:0 6px 28px rgba(0,41,112,.14);
+  --shl:0 12px 40px rgba(0,41,112,.22);
+  /* DESKTOP UPGRADE START - layout vars */
+  --sidebar-w:248px;
+  /* DESKTOP UPGRADE END */
+}
+html,body{min-height:100%;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font-family:'Poppins',sans-serif;border:none;outline:none}
+button{cursor:pointer}
+
+/* ─── LOGIN ──────────────────────────────────────────── */
+#loginScreen{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#00215e 0%,#0044b8 55%,#006fe8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.ls-trophy{font-size:3.8rem;filter:drop-shadow(0 6px 14px rgba(0,0,0,.3));margin-bottom:10px}
+.ls-brand{color:#fff;font-size:1.8rem;font-weight:900;letter-spacing:-.5px;text-align:center;line-height:1.15}
+.ls-sub{color:rgba(255,255,255,.55);font-size:.78rem;font-weight:500;margin-bottom:30px;text-align:center}
+.ls-card{background:#fff;border-radius:28px;padding:28px 22px 22px;width:100%;max-width:340px;box-shadow:0 32px 80px rgba(0,0,0,.35)}
+.pin-hint{font-size:.8rem;font-weight:600;color:var(--text2);text-align:center;margin-bottom:18px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin-bottom:24px}
+.pdot{width:16px;height:16px;border-radius:50%;border:2.5px solid #c8d4e8;background:transparent;transition:.18s}
+.pdot.on{background:var(--blue2);border-color:var(--blue2);transform:scale(1.25);box-shadow:0 0 0 4px rgba(0,80,200,.15)}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pkey{background:#f0f4fb;border-radius:16px;height:64px;font-size:1.55rem;font-weight:800;color:var(--blue);box-shadow:0 3px 8px rgba(0,41,112,.1);transition:.12s}
+.pkey:active{transform:scale(.86);background:#dce8ff}
+.pkey.del{color:var(--red);font-size:1rem}
+.pkey.ok{background:linear-gradient(135deg,var(--blue2),var(--blue3));color:#fff;font-size:1.1rem;box-shadow:0 4px 18px rgba(0,80,200,.4)}
+.pkey.ok:active{background:var(--blue)}
+.pin-err{color:var(--red);text-align:center;font-size:.76rem;min-height:18px;margin-top:12px;font-weight:700}
+
+/* ─── APP SHELL ──────────────────────────────────────── */
+#app{display:none;flex-direction:column;min-height:100vh}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.hdr{background:linear-gradient(120deg,#001f5c 0%,#0044b8 50%,#006fe8 100%);padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,31,92,.4)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.hdr-title{color:#fff;font-size:1.05rem;font-weight:800;line-height:1.25}
+.hdr-title small{display:block;font-size:.62rem;font-weight:500;opacity:.65;letter-spacing:.2px}
+.hdr-right{display:flex;gap:6px;align-items:center}
+.hdr-icon-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.22);color:#fff;width:36px;height:36px;border-radius:50%;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.hdr-icon-btn:active{background:rgba(255,255,255,.32)}
+.loc-bar{display:flex;background:rgba(0,0,0,.25);border-radius:14px;padding:3px;gap:3px;margin-bottom:14px}
+.loc-tab{flex:1;border:none;padding:9px 4px;border-radius:11px;font-size:.74rem;font-weight:700;color:rgba(255,255,255,.7);background:transparent;transition:.2s}
+.loc-tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+
+/* ─── MAIN ───────────────────────────────────────────── */
+.main{padding:16px;max-width:960px;margin:0 auto;width:100%;flex:1;padding-bottom:120px}
+
+/* ─── STAT CARDS ─────────────────────────────────────── */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat-card{border-radius:20px;padding:18px 10px 14px;position:relative;overflow:hidden;text-align:center;box-shadow:var(--shl)}
+.stat-card::before{content:'';position:absolute;right:-22px;top:-22px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.18)}
+.stat-card::after{content:'';position:absolute;left:-14px;bottom:-24px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.1)}
+.sc-icon{font-size:1.6rem;display:block;margin-bottom:4px;position:relative;z-index:1}
+.sc-num{font-size:2.6rem;font-weight:900;color:#fff;line-height:1;position:relative;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+.sc-lbl{font-size:.56rem;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.8px;margin-top:5px;position:relative;z-index:1}
+.sc-blue{background:linear-gradient(145deg,#002970,#0050c8)}
+.sc-red{background:linear-gradient(145deg,#9b0000,#e53935)}
+.sc-amber{background:linear-gradient(145deg,#b34500,#f4511e)}
+
+/* ─── QUICK ACTION CARDS ──────────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.qa-card{border-radius:20px;padding:18px 14px;display:flex;align-items:center;gap:13px;box-shadow:var(--shl);transition:.16s;text-align:left}
+.qa-card:active{transform:scale(.95)}
+.qa-add{background:linear-gradient(135deg,#0044b8,#00b4f0)}
+.qa-cats{background:linear-gradient(135deg,#5e00d4,#b44df5)}
+.qa-ico{width:52px;height:52px;flex-shrink:0;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.25);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.qa-txt{color:#fff}
+.qa-txt b{display:block;font-size:.98rem;font-weight:800}
+.qa-txt small{font-size:.65rem;opacity:.82;font-weight:500}
+
+/* ─── BACKUP ROW ─────────────────────────────────────── */
+.backup-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.bk-btn{border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);transition:.16s;border:2px solid var(--border);background:var(--white)}
+.bk-btn:active{transform:scale(.95)}
+.bk-export{border-color:#b8d4ff;background:linear-gradient(135deg,#f0f6ff,#e3eeff)}
+.bk-import{border-color:#b8f0d8;background:linear-gradient(135deg,#f0fff8,#e0faf0)}
+.bk-ico{width:38px;height:38px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.bk-export .bk-ico{background:#dbeaff;color:var(--blue2)}
+.bk-import .bk-ico{background:#d0f5e8;color:var(--green)}
+.bk-txt b{display:block;font-size:.8rem;font-weight:800;color:var(--text)}
+.bk-txt small{font-size:.62rem;color:var(--text2);font-weight:500}
+
+/* ─── SEARCH BAR ─────────────────────────────────────── */
+.search-box{display:flex;align-items:center;gap:11px;background:var(--white);border-radius:16px;padding:0 16px;border:2px solid var(--border);box-shadow:var(--sh);margin-bottom:14px;transition:.2s}
+.search-box:focus-within{border-color:var(--blue2);box-shadow:0 0 0 4px rgba(0,80,200,.1)}
+.search-box i{color:var(--text2);font-size:.95rem}
+.search-box input{flex:1;background:transparent;color:var(--text);font-size:.95rem;font-weight:500;padding:14px 0}
+.search-box input::placeholder{color:#b0bfce}
+
+/* ─── CATEGORY PILLS ─────────────────────────────────── */
+.pills-wrap{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.pills-wrap::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;border:2.5px solid var(--border);border-radius:24px;padding:8px 17px;font-size:.77rem;font-weight:700;background:var(--white);color:var(--text2);box-shadow:var(--sh);transition:.15s;white-space:nowrap}
+.pill:active{transform:scale(.93)}
+.pill.active{background:var(--blue2);color:#fff;border-color:var(--blue2);box-shadow:0 4px 14px rgba(0,80,200,.3)}
+.pill.p-low{border-color:var(--red);color:var(--red)}
+.pill.p-low.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* ─── SORT / COUNT BAR ───────────────────────────────── */
+.sort-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sort-row label{font-size:.77rem;font-weight:600;color:var(--text2);white-space:nowrap}
+.sort-row select{background:#fff;border:2px solid var(--border);border-radius:11px;padding:8px 12px;font-size:.8rem;font-weight:600;color:var(--text);box-shadow:var(--sh);cursor:pointer}
+.count-chip{margin-left:auto;background:var(--blue2);color:#fff;font-size:.71rem;font-weight:700;padding:5px 13px;border-radius:20px;box-shadow:0 3px 10px rgba(0,80,200,.3)}
+
+/* ─── SECTION HEADER ─────────────────────────────────── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-hdr h2{font-size:.93rem;font-weight:800;color:var(--text)}
+.sec-hdr span{font-size:.73rem;font-weight:600;color:var(--blue2)}
+
+/* ─── ITEMS GRID ─────────────────────────────────────── */
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+@media(min-width:540px){.items-grid{grid-template-columns:repeat(auto-fill,minmax(188px,1fr))}}
+@media(min-width:800px){.items-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}}
+
+/* ─── ITEM CARD ──────────────────────────────────────── */
+.item-card{background:var(--white);border-radius:20px;overflow:hidden;box-shadow:var(--shm);border:1.5px solid var(--border);transition:.16s;cursor:pointer}
+.item-card:active{transform:scale(.96);box-shadow:var(--sh)}
+.card-bar{height:7px;width:100%}
+.card-img-box{width:100%;aspect-ratio:1;overflow:hidden;background:#f0f4fb}
+.card-img{width:100%;height:100%;object-fit:cover;display:block}
+.card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.4rem}
+.card-body{padding:13px 12px 11px}
+.card-name{font-size:.87rem;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-cat{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:22px;font-size:.69rem;font-weight:700;margin-bottom:9px}
+.sb-ok{background:var(--gbg);color:var(--gtxt)}
+.sb-warn{background:var(--abg);color:var(--atxt)}
+.sb-low{background:var(--rbg);color:var(--rtxt)}
+.sz-row{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:10px}
+.sz-cell{background:#f0f4fb;border-radius:6px;padding:4px 2px;text-align:center}
+.szl{font-size:.52rem;color:var(--text2);font-weight:700;display:block}
+.szv{font-size:.8rem;font-weight:800;color:var(--text);display:block}
+.card-btns{display:flex;gap:6px}
+.cbtn{flex:1;padding:8px 4px;border-radius:11px;font-size:.72rem;font-weight:700;transition:.12s}
+.cbtn:active{transform:scale(.88)}
+.cbe{background:#e6f0ff;color:var(--blue2)}
+.cbd{background:var(--rbg);color:var(--rtxt)}
+
+/* ─── EMPTY STATE ────────────────────────────────────── */
+.empty{text-align:center;padding:70px 20px;color:var(--text2)}
+.empty .ei{font-size:5rem;display:block;margin-bottom:18px}
+.empty p{font-size:.92rem;line-height:1.7}
+
+/* ─── FAB ────────────────────────────────────────────── */
+.fab{position:fixed;bottom:24px;right:16px;z-index:90;background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border-radius:20px;padding:15px 22px;font-size:.93rem;font-weight:800;box-shadow:0 10px 32px rgba(0,41,112,.45);display:flex;align-items:center;gap:10px;transition:.15s}
+.fab:active{transform:scale(.93)}
+
+/* ─── MODAL ──────────────────────────────────────────── */
+.modal-ov{position:fixed;inset:0;z-index:200;background:rgba(5,15,50,.55);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.24s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:#fff;width:100%;max-width:530px;border-radius:26px 26px 0 0;padding:18px 18px 36px;max-height:94vh;overflow-y:auto;transform:translateY(50px);transition:.24s;scrollbar-width:none}
+.modal::-webkit-scrollbar{display:none}
+.modal-ov.open .modal{transform:translateY(0)}
+@media(min-width:560px){.modal-ov{align-items:center}.modal{border-radius:26px;max-height:90vh}}
+.m-handle{width:44px;height:4px;background:#dde3ed;border-radius:4px;margin:0 auto 18px}
+.m-title{font-size:1.18rem;font-weight:800;color:var(--text);margin-bottom:18px;display:flex;align-items:center;gap:9px}
+
+/* ─── FORM ELEMENTS ──────────────────────────────────── */
+.fg{margin-bottom:16px}
+.flbl{display:block;font-size:.71rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.finput{width:100%;background:#f2f6fc;border:2px solid var(--border);border-radius:12px;padding:13px 14px;color:var(--text);font-size:.95rem;font-weight:500;transition:.2s}
+.finput:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 4px rgba(0,80,200,.09)}
+.finput[readonly]{background:#eaf1ff;color:var(--blue);font-weight:800;font-size:1.1rem}
+select.finput{appearance:none;-webkit-appearance:none;cursor:pointer}
+.s-band{background:linear-gradient(90deg,var(--blue),var(--blue3));border-radius:11px;padding:10px 14px;color:#fff;font-size:.78rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.si-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.si-wrap{text-align:center}
+.si-wrap label{font-size:.67rem;font-weight:700;color:var(--text2);display:block;margin-bottom:4px}
+.si-wrap input{width:100%;background:#f2f6fc;border:2px solid var(--border);border-radius:9px;padding:10px 3px;text-align:center;color:var(--text);font-size:.9rem;font-weight:800;transition:.18s}
+.si-wrap input:focus{border-color:var(--blue2);background:#fff}
+
+/* ─── IMAGE UPLOAD ───────────────────────────────────── */
+.img-zone{border:2.5px dashed #c0cfea;border-radius:13px;padding:26px 16px;text-align:center;cursor:pointer;background:#f7faff;transition:.2s}
+.img-zone:hover{border-color:var(--blue2);background:#eef5ff}
+.img-zone i{font-size:2.4rem;color:#b0bfce;display:block;margin-bottom:8px}
+.img-zone p{font-size:.78rem;color:var(--text2);font-weight:500}
+.img-prev-wrap{position:relative;display:inline-block;margin-top:8px}
+.img-prev{width:110px;height:110px;object-fit:cover;border-radius:13px;display:block;box-shadow:var(--shm)}
+.img-rm{position:absolute;top:-9px;right:-9px;background:var(--red);color:#fff;width:26px;height:26px;border-radius:50%;font-size:.64rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.22)}
+.upbtns{display:flex;gap:8px;margin-top:10px}
+.upbtn{flex:1;background:#eef4ff;border:2px solid #d0e0ff;border-radius:11px;padding:11px 6px;color:var(--blue2);font-size:.77rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;transition:.14s}
+.upbtn:active{background:#dce8ff}
+
+/* ─── FORM BUTTONS ───────────────────────────────────── */
+.fbtns{display:flex;gap:10px;margin-top:20px}
+.btn-p{flex:2;background:linear-gradient(135deg,var(--blue),var(--blue3));border-radius:13px;padding:15px;color:#fff;font-size:1rem;font-weight:800;box-shadow:0 6px 20px rgba(0,41,112,.3);transition:.14s}
+.btn-p:active{transform:scale(.96)}
+.btn-s{flex:1;background:#f0f4ff;border-radius:13px;padding:15px;color:var(--blue);font-size:.9rem;font-weight:700}
+
+/* ─── DRAFT BANNER ───────────────────────────────────── */
+.draft-banner{background:#fffbe6;border:1.5px solid #ffe58f;border-radius:10px;padding:9px 13px;font-size:.76rem;font-weight:600;color:#7c5c00;margin-bottom:14px;display:none;align-items:center;gap:8px}
+.draft-banner.show{display:flex}
+
+/* ─── CATEGORY MANAGER ───────────────────────────────── */
+.cat-count-tip{font-size:.71rem;color:var(--text2);font-weight:600;margin-bottom:10px}
+.cat-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.cat-row{display:flex;align-items:center;gap:10px;background:#f4f8ff;border-radius:13px;padding:13px 14px;border:1.5px solid var(--border);transition:.14s}
+.cat-row:hover{border-color:#c0d4f8;background:#edf4ff}
+.cat-em{font-size:1.5rem;flex-shrink:0}
+.cat-nm{flex:1;font-weight:700;font-size:.93rem;color:var(--text)}
+.cat-del{background:var(--rbg);color:var(--rtxt);width:36px;height:36px;border-radius:10px;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.12s}
+.cat-del:active{transform:scale(.88)}
+.no-cats{color:var(--text2);text-align:center;padding:28px;font-size:.88rem}
+.add-cat-row{display:flex;gap:8px;align-items:stretch}
+.emoji-pick{background:#f2f6fc;border:2px solid var(--border);border-radius:11px;padding:11px 10px;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+.cat-name-input{flex:1;background:#f2f6fc;border:2px solid var(--border);border-radius:11px;padding:11px 14px;color:var(--text);font-size:.9rem;font-weight:600;min-width:0;transition:.18s}
+.cat-name-input:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 4px rgba(0,80,200,.09)}
+.btn-add-cat{background:linear-gradient(135deg,var(--blue),var(--blue3));color:#fff;border-radius:11px;padding:11px 14px;font-size:.78rem;font-weight:700;flex-shrink:0;box-shadow:0 4px 14px rgba(0,41,112,.26);transition:.14s}
+.btn-add-cat:active{transform:scale(.9)}
+
+/* ─── CONFIRM MODAL ──────────────────────────────────── */
+.conf-ico{font-size:4rem;text-align:center;display:block;margin-bottom:8px}
+.conf-msg{text-align:center;color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:22px}
+
+/* ─── DETAIL MODAL ───────────────────────────────────── */
+.det-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;margin-bottom:14px;box-shadow:var(--shm)}
+.det-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px}
+.det-name{font-size:1.18rem;font-weight:800;color:var(--text)}
+.det-cat{font-size:.71rem;color:var(--text2);font-weight:600;margin-top:3px}
+.det-sg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.dsz{background:#f2f6fc;border:1.5px solid var(--border);border-radius:11px;padding:10px 4px;text-align:center}
+.dsz-l{font-size:.6rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:3px}
+.dsz-v{font-size:1.1rem;font-weight:800;color:var(--text);display:block}
+
+/* ═══════════════════════════════════════════════════════ */
+/* DESKTOP UPGRADE START - all desktop enhancements below  */
+/* ═══════════════════════════════════════════════════════ */
+
+/* ─── SIDEBAR (desktop only, hidden by default) ─────── */
+.sidebar{display:none;position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);z-index:110;background:linear-gradient(165deg,#001f5c 0%,#002970 50%,#0044b8 100%);padding:24px 16px;box-shadow:4px 0 28px rgba(0,31,92,.25);flex-direction:column;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:3px}
+.sb-brand{display:flex;align-items:center;gap:11px;padding:6px 6px 22px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sb-logo{width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.sb-brand-text{color:#fff;font-size:.98rem;font-weight:800;line-height:1.2}
+.sb-brand-text small{display:block;font-size:.6rem;font-weight:500;opacity:.6;letter-spacing:.3px;margin-top:2px}
+.sb-section-lbl{color:rgba(255,255,255,.45);font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:14px 10px 8px}
+.sb-nav{display:flex;flex-direction:column;gap:4px}
+.sb-link{background:transparent;border:none;color:rgba(255,255,255,.78);font-size:.86rem;font-weight:600;text-align:left;padding:11px 14px;border-radius:12px;display:flex;align-items:center;gap:13px;width:100%;transition:background .18s,color .18s,transform .18s}
+.sb-link i{width:20px;font-size:.94rem;text-align:center;opacity:.85}
+.sb-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.sb-link.active{background:linear-gradient(135deg,rgba(26,111,255,.55),rgba(0,180,240,.45));color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.18);font-weight:700}
+.sb-link.active i{opacity:1}
+.sb-divider{height:1px;background:rgba(255,255,255,.1);margin:14px 6px}
+.sb-foot{margin-top:auto;padding:14px 10px 4px;color:rgba(255,255,255,.42);font-size:.66rem;font-weight:500;line-height:1.5;border-top:1px solid rgba(255,255,255,.08)}
+
+/* ─── VIEW TOGGLE (desktop only, hidden by default) ── */
+.view-toggle{display:none;background:#fff;border:2px solid var(--border);border-radius:11px;padding:3px;box-shadow:var(--sh);gap:2px}
+.view-toggle button{background:transparent;border:none;padding:7px 13px;border-radius:8px;font-size:.78rem;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:6px;transition:.18s}
+.view-toggle button.active{background:var(--blue2);color:#fff;box-shadow:0 2px 8px rgba(0,80,200,.3)}
+.view-toggle button:hover:not(.active){color:var(--text);background:#f0f4fb}
+
+/* ─── TABLE VIEW ─────────────────────────────────────── */
+.items-table-wrap{display:none;background:#fff;border-radius:18px;border:1.5px solid var(--border);box-shadow:var(--shm);overflow:hidden}
+.items-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.items-table thead{background:linear-gradient(135deg,#f5f8ff,#eaf1ff)}
+.items-table th{text-align:left;padding:14px 18px;font-size:.7rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid var(--border);white-space:nowrap}
+.items-table th.t-actions{text-align:right}
+.items-table td{padding:14px 18px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.items-table tbody tr{transition:background .15s}
+.items-table tbody tr:hover{background:#f7faff}
+.items-table tbody tr:last-child td{border-bottom:none}
+.t-name-cell{display:flex;align-items:center;gap:12px;font-weight:700}
+.t-thumb{width:46px;height:46px;border-radius:11px;object-fit:cover;flex-shrink:0;background:#f0f4fb;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:1.5px solid var(--border)}
+.t-thumb img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+.t-cat-pill{display:inline-block;padding:4px 11px;border-radius:18px;font-size:.7rem;font-weight:700;background:#eef4ff;color:var(--blue2);white-space:nowrap}
+.t-stock-summary{font-weight:700;color:var(--text)}
+.t-stock-summary small{display:block;font-weight:500;color:var(--text2);font-size:.7rem;margin-top:2px}
+.t-actions{text-align:right;white-space:nowrap}
+.t-actions button{background:transparent;border:1.5px solid var(--border);width:34px;height:34px;border-radius:9px;font-size:.78rem;color:var(--text2);margin-left:6px;transition:.16s;display:inline-flex;align-items:center;justify-content:center}
+.t-actions button.t-edit:hover{background:#e6f0ff;color:var(--blue2);border-color:#b8d4ff}
+.t-actions button.t-del:hover{background:var(--rbg);color:var(--rtxt);border-color:#f5b8b8}
+
+/* ─── DESKTOP HOVER INTERACTIONS (only on hover-capable devices) ── */
+@media (hover:hover) and (pointer:fine){
+  .item-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .item-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,41,112,.18);border-color:#c8d6ee}
+  .pill{transition:transform .18s ease,background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease}
+  .pill:hover:not(.active){border-color:var(--blue2);color:var(--blue2);transform:translateY(-1px)}
+  .stat-card{transition:transform .22s ease,box-shadow .22s ease}
+  .stat-card:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(0,41,112,.28)}
+  .qa-card{transition:transform .22s ease,box-shadow .22s ease,filter .22s ease}
+  .qa-card:hover{transform:translateY(-3px);filter:brightness(1.07);box-shadow:0 18px 48px rgba(0,41,112,.28)}
+  .bk-btn{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+  .bk-btn:hover{transform:translateY(-2px);filter:brightness(1.04);box-shadow:var(--shm)}
+  .cbtn,.upbtn,.btn-p,.btn-s,.fab,.btn-add-cat,.cat-del,.t-actions button,.hdr-icon-btn{transition:filter .15s ease,transform .15s ease,box-shadow .18s ease,background .18s ease,color .18s ease}
+  .cbtn:hover,.upbtn:hover,.btn-add-cat:hover{filter:brightness(1.06)}
+  .btn-p:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,41,112,.4)}
+  .btn-s:hover{background:#e3ebff}
+  .fab:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 14px 38px rgba(0,41,112,.5)}
+  .hdr-icon-btn:hover{background:rgba(255,255,255,.32)}
+  .loc-tab{transition:background .2s ease,color .2s ease}
+  .loc-tab:hover:not(.active){color:#fff;background:rgba(255,255,255,.1)}
+  .pkey{transition:transform .12s ease,background .15s ease,filter .15s ease}
+  .pkey:hover{filter:brightness(1.04);background:#e6efff}
+  .pkey.ok:hover{filter:brightness(1.1)}
+}
+
+/* ─── BREAKPOINT: 768px - tablet ─────────────────────── */
+@media (min-width:768px){
+  .main{max-width:1100px;padding:24px 24px 130px}
+  .stat-row{grid-template-columns:repeat(3,1fr);gap:16px}
+  .stat-card{padding:24px 16px 20px}
+  .sc-num{font-size:3.1rem}
+  .sc-icon{font-size:1.9rem}
+  .sc-lbl{font-size:.62rem}
+  .qa-grid{grid-template-columns:repeat(4,1fr);gap:14px}
+  .qa-card{padding:18px 16px}
+  .backup-row{grid-template-columns:repeat(2,1fr);max-width:560px}
+  .items-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+  .hdr{padding:0 24px}
+  .hdr-title{font-size:1.18rem}
+  .hdr-title small{font-size:.66rem}
+  .hdr-icon-btn{width:40px;height:40px;font-size:.9rem}
+  .sec-hdr h2{font-size:1.05rem}
+}
+
+/* ─── BREAKPOINT: 1024px - desktop with sidebar ─────── */
+@media (min-width:1024px){
+  body{background:#eaf0f8}
+
+  /* Show sidebar */
+  .sidebar{display:flex}
+
+  /* Shift content right */
+  .hdr{margin-left:var(--sidebar-w);padding:0 32px}
+  .main{margin-left:var(--sidebar-w);max-width:none;padding:28px 36px 60px;width:auto}
+
+  /* FAB stays right of content */
+  .fab{bottom:32px;right:32px}
+
+  /* Hide mobile-redundant header logo (sidebar has it) */
+  .hdr-left .hdr-logo{display:none}
+  .hdr-title{font-size:1.25rem}
+
+  /* Bigger stats with 4 columns option */
+  .stat-row{grid-template-columns:repeat(3,1fr);max-width:960px;gap:18px}
+  .sc-num{font-size:3.4rem}
+
+  /* Quick actions = 4 cols */
+  .qa-grid{grid-template-columns:repeat(4,1fr)}
+  .qa-card{padding:20px 18px}
+  .qa-txt b{font-size:1.05rem}
+  .qa-txt small{font-size:.7rem}
+
+  /* Items grid larger cards */
+  .items-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+  .card-name{font-size:.95rem}
+
+  /* Show view toggle */
+  .view-toggle{display:inline-flex}
+
+  /* Modals centered */
+  .modal-ov{align-items:center;padding:24px}
+  .modal{border-radius:24px;max-height:88vh;max-width:600px}
+  .m-handle{display:none}
+
+  /* Better form spacing in modals */
+  .fg{margin-bottom:18px}
+
+  /* Show desktop section heading actions inline */
+  .sec-hdr{margin-bottom:18px}
+}
+
+/* ─── BREAKPOINT: 1440px+ - wide desktop ─────────────── */
+@media (min-width:1440px){
+  .main{padding:32px 56px 80px}
+  .stat-row{grid-template-columns:repeat(3,1fr);max-width:1100px}
+  .items-grid{grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:24px}
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* DESKTOP UPGRADE END                                     */
+/* ═══════════════════════════════════════════════════════ */
+
+/* SWAP FEATURE START — styles for swap modal + history */
+.cbs{background:#e6f9f0;color:var(--green)}
+
+/* SIMPLE TRANSFER START — friendlier direction banner + stepper rows + sticky confirm */
+.tx-direction{background:linear-gradient(135deg,#00875a 0%,#00b07a 100%);border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:14px;box-shadow:0 6px 18px rgba(0,135,90,.25)}
+.tx-dir-row{display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.05rem;font-weight:800;letter-spacing:.2px;margin-bottom:4px}
+.tx-dir-loc{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);padding:7px 14px;border-radius:24px;border:1.5px solid rgba(255,255,255,.3)}
+.tx-dir-arrow{font-size:1.2rem;opacity:.95}
+.tx-dir-item{text-align:center;font-size:.78rem;font-weight:600;opacity:.9;line-height:1.3;margin-top:6px}
+.tx-dir-item b{font-weight:800;opacity:1}
+
+.tx-step-label{font-size:.7rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.tx-step-label .tx-num{background:var(--blue2);color:#fff;width:20px;height:20px;border-radius:50%;font-size:.66rem;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+
+.tx-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.tx-row{display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:12px;background:#f4f8ff;border:1.5px solid var(--border);border-radius:14px;padding:10px 12px;transition:.18s}
+.tx-row.active{border-color:var(--green);background:#f0fbf6;box-shadow:0 2px 10px rgba(0,135,90,.08)}
+.tx-row-label{display:flex;flex-direction:column}
+.tx-row-label b{font-size:1.05rem;font-weight:800;color:var(--text);line-height:1}
+.tx-row-label small{font-size:.65rem;font-weight:600;color:var(--text2);margin-top:3px}
+.tx-stepper{display:flex;align-items:center;gap:0;background:#fff;border:1.5px solid var(--border);border-radius:11px;overflow:hidden;height:42px}
+.tx-stepper.active{border-color:var(--green)}
+.tx-step-btn{background:transparent;border:none;width:42px;height:42px;font-size:1.05rem;font-weight:900;color:var(--blue);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .14s,color .14s;-webkit-tap-highlight-color:rgba(0,80,200,.15);user-select:none}
+.tx-step-btn:active{background:#dce8ff;color:var(--blue)}
+.tx-step-btn:disabled{color:#c8d4e8;cursor:not-allowed;background:transparent}
+.tx-step-btn.plus{color:var(--green)}
+.tx-step-btn.plus:active{background:#d0f5e8}
+.tx-step-num{width:46px;text-align:center;font-size:1rem;font-weight:800;color:var(--text);background:transparent;border:none;border-left:1.5px solid var(--border);border-right:1.5px solid var(--border);height:42px;outline:none;-moz-appearance:textfield}
+.tx-step-num::-webkit-outer-spin-button,.tx-step-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.tx-step-num:focus{background:#f7fbff}
+.tx-row-max{font-size:.7rem;font-weight:600;color:var(--text2);white-space:nowrap;text-align:right}
+.tx-row-max b{color:var(--text);font-weight:800}
+
+.tx-no-stock{text-align:center;padding:30px 16px;color:var(--text2);background:#f4f8ff;border-radius:13px;border:1.5px dashed #c8d4e8;margin-bottom:14px}
+.tx-no-stock .ei{font-size:2.6rem;display:block;margin-bottom:8px}
+.tx-no-stock p{font-size:.85rem;font-weight:600;line-height:1.5}
+
+.tx-total-card{background:linear-gradient(135deg,#002970 0%,#1a6fff 100%);border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 18px rgba(0,41,112,.22)}
+.tx-total-label{font-size:.74rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.88;display:flex;align-items:center;gap:8px}
+.tx-total-num{font-size:1.7rem;font-weight:900;line-height:1}
+.tx-total-num small{font-size:.6rem;font-weight:600;opacity:.78;letter-spacing:.4px;text-transform:uppercase;display:block;text-align:right;margin-top:2px}
+
+.tx-staff-row{display:grid;grid-template-columns:1fr;gap:0;margin-bottom:14px}
+.tx-staff-row .finput{padding:14px 16px;font-size:1rem}
+.tx-when-tip{font-size:.72rem;color:var(--text2);font-weight:600;margin-top:6px;display:flex;align-items:center;gap:6px}
+.tx-when-tip i{color:var(--blue2)}
+
+/* Sticky confirm bar at bottom of modal on mobile */
+.tx-sticky-bar{position:sticky;bottom:-18px;left:0;right:0;background:linear-gradient(to top,#fff 70%,rgba(255,255,255,0));padding:14px 0 4px;margin:8px -18px -36px;z-index:5}
+.tx-sticky-bar .fbtns{margin:0 18px}
+.btn-confirm-tx{background:linear-gradient(135deg,#00875a 0%,#00b07a 100%) !important;box-shadow:0 8px 22px rgba(0,135,90,.36) !important;font-size:1.05rem !important;padding:17px !important}
+@media (hover:hover) and (pointer:fine){
+  .tx-step-btn:hover:not(:disabled){background:#eef4ff}
+  .tx-step-btn.plus:hover:not(:disabled){background:#e0faf0}
+  .btn-confirm-tx:hover{filter:brightness(1.08);transform:translateY(-1px)}
+}
+/* SIMPLE TRANSFER END */
+
+/* FIXES #7 #9 #12 START — anomaly badge, history pagination, trash modal */
+/* Sidebar/header badge for anomalies (rollback failures needing manual review) */
+.anomaly-pill{display:none;background:#9b0000;color:#fff;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-left:auto;letter-spacing:.3px}
+.anomaly-pill.show{display:inline-flex}
+.trash-pill{display:none;background:#5a6780;color:#fff;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-left:auto;letter-spacing:.3px}
+.trash-pill.show{display:inline-flex}
+
+/* Reverse-transfer button on history cards */
+.hist-card{position:relative}
+.hist-actions{margin-top:8px;display:flex;justify-content:flex-end}
+.hist-reverse-btn{background:#fff7e6;color:#7c5c00;border:1.5px solid #ffe1a3;border-radius:10px;padding:6px 12px;font-size:.72rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:.14s;cursor:pointer}
+.hist-reverse-btn:active{transform:scale(.92)}
+.hist-reverse-btn:disabled{opacity:.5;cursor:not-allowed}
+.hist-card.reversal{border-left:3px solid var(--amber);background:#fffbf2}
+.hist-reversal-tag{background:var(--abg) !important;color:var(--atxt) !important;border-color:#ffd6b3 !important}
+@media (hover:hover) and (pointer:fine){
+  .hist-reverse-btn:hover:not(:disabled){background:#fff0cc;border-color:#ffd47a}
+}
+
+/* History pagination */
+.hist-load-more{margin-top:12px;width:100%;background:#eef4ff;color:var(--blue);border:2px solid #c8d4e8;border-radius:11px;padding:11px;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;cursor:pointer}
+.hist-load-more:active{transform:scale(.97);background:#dce8ff}
+@media (hover:hover) and (pointer:fine){
+  .hist-load-more:hover{background:#dce8ff}
+}
+
+/* Trash modal */
+.trash-tip{font-size:.74rem;font-weight:600;color:var(--text2);margin-bottom:12px;background:#fffbe6;border:1.5px solid #ffe58f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;line-height:1.4}
+.trash-tip i{color:#7c5c00;flex-shrink:0}
+.trash-list{display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;padding-right:2px;scrollbar-width:thin}
+.trash-list::-webkit-scrollbar{width:6px}
+.trash-list::-webkit-scrollbar-thumb{background:#cfd8e8;border-radius:3px}
+.trash-card{background:#f4f8ff;border:1.5px solid var(--border);border-radius:13px;padding:12px 14px;display:flex;align-items:center;gap:11px}
+.trash-thumb{width:46px;height:46px;border-radius:10px;background:#fff;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden}
+.trash-thumb img{width:100%;height:100%;object-fit:cover}
+.trash-info{flex:1;min-width:0}
+.trash-name{font-weight:800;font-size:.9rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trash-meta{font-size:.7rem;font-weight:600;color:var(--text2);margin-top:2px}
+.trash-meta b{color:var(--blue2)}
+.trash-meta.expiring b{color:var(--rtxt)}
+.trash-actions{display:flex;gap:6px;flex-shrink:0}
+.trash-restore{background:#e6f9f0;color:var(--gtxt);border:1.5px solid #a8e0c8;border-radius:10px;padding:7px 11px;font-size:.72rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:.14s;cursor:pointer}
+.trash-purge{background:var(--rbg);color:var(--rtxt);border:1.5px solid #f5b8b8;border-radius:10px;padding:7px 9px;font-size:.72rem;font-weight:700;transition:.14s;cursor:pointer}
+.trash-restore:active,.trash-purge:active{transform:scale(.92)}
+@media (hover:hover) and (pointer:fine){
+  .trash-restore:hover{background:#d0f5e8}
+  .trash-purge:hover{background:#fbd5d5}
+}
+.trash-empty{text-align:center;padding:40px 20px;color:var(--text2)}
+.trash-empty .ei{font-size:3.4rem;display:block;margin-bottom:12px}
+.trash-foot-row{display:flex;gap:10px;margin-top:12px}
+
+/* Anomaly modal */
+.anomaly-warn-bar{background:linear-gradient(135deg,#9b0000,#e53935);color:#fff;border-radius:12px;padding:11px 14px;margin-bottom:12px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:9px;line-height:1.4;box-shadow:0 4px 14px rgba(155,0,0,.25)}
+.anomaly-card{background:#fff;border:1.5px solid #f5b8b8;border-left:4px solid var(--red);border-radius:13px;padding:12px 14px;margin-bottom:10px}
+.anomaly-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.anomaly-name{font-weight:800;font-size:.9rem;color:var(--text)}
+.anomaly-when{font-size:.66rem;font-weight:700;color:var(--rtxt);background:var(--rbg);padding:3px 9px;border-radius:12px;white-space:nowrap}
+.anomaly-detail{font-size:.74rem;color:var(--text2);font-weight:500;line-height:1.5;margin-top:4px}
+.anomaly-detail b{color:var(--text);font-weight:700}
+.anomaly-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+.anomaly-resolve{background:var(--gbg);color:var(--gtxt);border:1.5px solid #a8e0c8;border-radius:9px;padding:6px 11px;font-size:.7rem;font-weight:700;transition:.14s;cursor:pointer}
+.anomaly-resolve:active{transform:scale(.92)}
+@media (hover:hover) and (pointer:fine){
+  .anomaly-resolve:hover{background:#d0f5e8}
+}
+.anomaly-empty{text-align:center;padding:30px 20px;color:var(--text2)}
+.anomaly-empty .ei{font-size:3rem;display:block;margin-bottom:10px}
+/* FIXES #7 #9 #12 END */
+.swap-row-info{background:linear-gradient(90deg,#00875a,#00b07a);border-radius:11px;padding:11px 14px;color:#fff;font-size:.78rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:9px;line-height:1.4}
+.swap-size-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:6px}
+.swap-sz{background:#f2f6fc;border:1.5px solid var(--border);border-radius:11px;padding:9px 4px 7px;text-align:center;transition:.18s}
+.swap-sz.has-stock{border-color:#b8d4ff;background:#f0f6ff}
+.swap-sz.zero{opacity:.45}
+.swap-sz label{font-size:.62rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:3px}
+.swap-sz .avail{font-size:.6rem;font-weight:600;color:var(--text2);display:block;margin-bottom:5px}
+.swap-sz input{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:7px 2px;text-align:center;color:var(--text);font-size:.92rem;font-weight:800;transition:.18s}
+.swap-sz input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,135,90,.15)}
+.swap-sz input:disabled{background:#f0f4fb;color:#b0bfce;cursor:not-allowed}
+.swap-total-bar{background:#f2f6fc;border:1.5px dashed #c0d4f8;border-radius:11px;padding:10px 14px;font-size:.82rem;font-weight:700;color:var(--text);text-align:center;margin:8px 0 16px}
+.swap-total-bar b{color:var(--green);font-weight:800}
+.swap-warn{background:var(--rbg);border:1.5px solid #f5b8b8;color:var(--rtxt);border-radius:10px;padding:9px 13px;font-size:.76rem;font-weight:600;margin-bottom:14px;display:none;align-items:center;gap:8px}
+.swap-warn.show{display:flex}
+
+/* History list */
+.hist-empty{text-align:center;padding:40px 20px;color:var(--text2)}
+.hist-empty .ei{font-size:3.6rem;display:block;margin-bottom:12px}
+.hist-list{display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;padding-right:2px;scrollbar-width:thin}
+.hist-list::-webkit-scrollbar{width:6px}
+.hist-list::-webkit-scrollbar-thumb{background:#cfd8e8;border-radius:3px}
+.hist-card{background:#f4f8ff;border:1.5px solid var(--border);border-radius:14px;padding:12px 14px;transition:.15s}
+.hist-card:hover{border-color:#c0d4f8;background:#edf4ff}
+.hist-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.hist-name{font-size:.93rem;font-weight:800;color:var(--text);line-height:1.25}
+.hist-name small{display:block;font-size:.66rem;font-weight:600;color:var(--text2);margin-top:2px}
+.hist-date{font-size:.68rem;font-weight:700;color:var(--blue2);background:#e6f0ff;padding:3px 10px;border-radius:14px;white-space:nowrap;flex-shrink:0}
+.hist-meta{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.hist-chip{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:3px 9px;font-size:.7rem;font-weight:700;color:var(--text)}
+.hist-chip.staff{background:#fff7e6;border-color:#ffe1a3;color:#7c5c00}
+.hist-chip.total{background:#e6f9f0;border-color:#a8e0c8;color:var(--gtxt)}
+.hist-sizes{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.hs-pill{background:#fff;border:1px solid var(--border);border-radius:8px;padding:2px 7px;font-size:.66rem;font-weight:700;color:var(--text2)}
+.hs-pill b{color:var(--green)}
+.hist-filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.hist-filter-row input{flex:1;min-width:140px;background:#f2f6fc;border:2px solid var(--border);border-radius:11px;padding:9px 12px;font-size:.85rem;font-weight:500;color:var(--text);transition:.18s}
+.hist-filter-row input:focus{border-color:var(--blue2);background:#fff;outline:none}
+.hist-clear-btn{background:var(--rbg);color:var(--rtxt);border-radius:11px;padding:9px 14px;font-size:.78rem;font-weight:700;border:1.5px solid #f5b8b8;flex-shrink:0;transition:.14s}
+.hist-clear-btn:active{transform:scale(.92)}
+.hist-count-tip{font-size:.71rem;color:var(--text2);font-weight:600;margin-bottom:10px}
+@media (hover:hover) and (pointer:fine){
+  .hist-clear-btn:hover{filter:brightness(1.04)}
+}
+/* SWAP FEATURE END */
+
+/* DUAL-LOCATION FEATURE START — styles for two-location stock entry */
+.s-band-wh{background:linear-gradient(90deg,#5e00d4,#9333ea)}
+.dual-tip{background:#eef4ff;border:1.5px solid #c8d6ee;color:var(--blue);border-radius:10px;padding:8px 12px;font-size:.74rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;line-height:1.4}
+.dual-total{background:linear-gradient(135deg,#002970,#1a6fff);border-radius:13px;padding:12px 14px;color:#fff;margin:6px 0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 6px 18px rgba(0,41,112,.22)}
+.dual-total-left{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;opacity:.85;display:flex;align-items:center;gap:8px}
+.dual-total-num{font-size:1.5rem;font-weight:900;line-height:1}
+.dual-total-num small{font-size:.62rem;font-weight:600;opacity:.75;letter-spacing:.4px;display:block;text-align:right;text-transform:uppercase;margin-top:1px}
+.dual-breakdown{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+.dual-bd-chip{background:#f4f8ff;border:1.5px solid var(--border);border-radius:10px;padding:5px 11px;font-size:.7rem;font-weight:700;color:var(--text);display:inline-flex;align-items:center;gap:5px}
+.dual-bd-chip b{color:var(--blue2);font-weight:800}
+.dual-bd-chip.wh b{color:var(--purple)}
+/* DUAL-LOCATION FEATURE END */
+
+/* LOADING SYSTEM START — global loader + button busy states */
+#globalLoader{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#00215e 0%,#0044b8 55%,#006fe8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .35s ease}
+#globalLoader.hide{opacity:0;pointer-events:none}
+.gl-trophy{font-size:3.4rem;filter:drop-shadow(0 6px 14px rgba(0,0,0,.3));margin-bottom:16px;animation:glBounce 1.4s ease-in-out infinite}
+@keyframes glBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.gl-brand{color:#fff;font-size:1.25rem;font-weight:900;letter-spacing:-.3px;text-align:center;line-height:1.15;margin-bottom:8px}
+.gl-sub{color:rgba(255,255,255,.7);font-size:.78rem;font-weight:500;margin-bottom:30px;text-align:center;min-height:1.2em}
+.gl-track{width:200px;height:6px;background:rgba(255,255,255,.18);border-radius:6px;overflow:hidden;position:relative}
+.gl-bar{position:absolute;top:0;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,#fff,transparent);animation:glSlide 1.3s linear infinite;border-radius:6px}
+@keyframes glSlide{0%{left:-40%}100%{left:100%}}
+.gl-err{color:#ffd6d6;font-size:.84rem;font-weight:600;margin-top:18px;text-align:center;max-width:300px;line-height:1.5;display:none}
+.gl-err.show{display:block}
+.gl-retry{margin-top:14px;background:#fff;color:var(--blue);border-radius:11px;padding:10px 22px;font-size:.85rem;font-weight:800;display:none;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:.15s}
+.gl-retry.show{display:inline-flex}
+.gl-retry:active{transform:scale(.94)}
+
+/* Toast for non-blocking errors */
+#toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);z-index:10000;background:#0c1b3a;color:#fff;padding:12px 18px;border-radius:14px;font-size:.85rem;font-weight:600;box-shadow:0 12px 32px rgba(0,0,0,.35);max-width:90vw;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;line-height:1.4;display:flex;align-items:center;gap:10px}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#toast.err{background:#9b0000}
+#toast.ok{background:#00875a}
+#toast i{font-size:1rem}
+
+/* Button busy states (used on Save/Swap/Import) */
+button.is-busy{position:relative;color:transparent !important;pointer-events:none;opacity:.85}
+button.is-busy::after{content:'';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Font Awesome 6 Free';font-weight:900;animation:btnSpin .9s linear infinite;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-dasharray='14 50' opacity='.95'/></svg>");background-repeat:no-repeat;background-position:center}
+button.is-busy.dark::after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' fill='none' stroke='%230050c8' stroke-width='2.6' stroke-linecap='round' stroke-dasharray='14 50'/></svg>")}
+@keyframes btnSpin{to{transform:rotate(360deg)}}
+button[disabled],button:disabled{opacity:.55;cursor:not-allowed;pointer-events:none}
+/* LOADING SYSTEM END */
+
+</style>
+</head>
+<body>
+
+<!-- LOADING SYSTEM START — global loader + toast (always in DOM) -->
+<div id="globalLoader" class="hide" style="display:none">
+  <div class="gl-trophy">🏆</div>
+  <div class="gl-brand">Sports Factory Ranchi</div>
+  <div class="gl-sub" id="glSub">Connecting to inventory…</div>
+  <div class="gl-track"><div class="gl-bar"></div></div>
+  <div class="gl-err" id="glErr"></div>
+  <button class="gl-retry" id="glRetry"><i class="fa-solid fa-rotate-right"></i> Retry</button>
+</div>
+<div id="toast"><i class="fa-solid fa-circle-info"></i><span id="toastMsg"></span></div>
+<!-- LOADING SYSTEM END -->
+
+<!-- ─── LOGIN SCREEN ─────────────────────────────────── -->
+<div id="loginScreen">
+  <div class="ls-trophy">🏆</div>
+  <div class="ls-brand">Sports Factory<br/>Ranchi</div>
+  <div class="ls-sub">Inventory Management System</div>
+  <div class="ls-card">
+    <div class="pin-hint">Enter 4-digit PIN</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div>
+    </div>
+    <div class="pin-grid" id="pinGrid"></div>
+    <div class="pin-err" id="pinErr"></div>
+  </div>
+</div>
+
+<!-- ─── APP ──────────────────────────────────────────── -->
+<div id="app">
+
+  <!-- DESKTOP UPGRADE START - sidebar (visible >=1024px only) -->
+  <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+    <div class="sb-brand">
+      <div class="sb-logo">🏆</div>
+      <div class="sb-brand-text">Sports Factory<small>Ranchi Inventory</small></div>
+    </div>
+    <div class="sb-section-lbl">Main</div>
+    <nav class="sb-nav">
+      <button class="sb-link active" data-nav="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</button>
+      <button class="sb-link" data-nav="add"><i class="fa-solid fa-plus"></i>Add Item</button>
+      <button class="sb-link" data-nav="categories"><i class="fa-solid fa-shapes"></i>Categories</button>
+    </nav>
+    <div class="sb-divider"></div>
+    <div class="sb-section-lbl">Data</div>
+    <nav class="sb-nav">
+      <button class="sb-link" data-nav="export"><i class="fa-solid fa-cloud-arrow-down"></i>Export Backup</button>
+      <button class="sb-link" data-nav="import"><i class="fa-solid fa-cloud-arrow-up"></i>Import Backup</button>
+      <!-- SWAP FEATURE START -->
+      <button class="sb-link" data-nav="history"><i class="fa-solid fa-clock-rotate-left"></i>Swap History</button>
+      <!-- SWAP FEATURE END -->
+      <!-- FIX #12 START - trash link -->
+      <button class="sb-link" data-nav="trash"><i class="fa-solid fa-trash-can-arrow-up"></i>Recently Deleted<span class="trash-pill" id="sbTrashPill">0</span></button>
+      <!-- FIX #12 END -->
+      <!-- FIX #7 START - anomaly link -->
+      <button class="sb-link" data-nav="anomalies"><i class="fa-solid fa-triangle-exclamation"></i>Stock Anomalies<span class="anomaly-pill" id="sbAnomalyPill">0</span></button>
+      <!-- FIX #7 END -->
+    </nav>
+    <div class="sb-divider"></div>
+    <div class="sb-section-lbl">Account</div>
+    <nav class="sb-nav">
+      <button class="sb-link" data-nav="settings"><i class="fa-solid fa-gear"></i>Settings</button>
+      <button class="sb-link" data-nav="logout"><i class="fa-solid fa-right-from-bracket"></i>Lock</button>
+    </nav>
+    <div class="sb-foot">© Sports Factory Ranchi<br/>v2.0 · Desktop Edition</div>
+  </aside>
+  <!-- DESKTOP UPGRADE END -->
+
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-left">
+        <div class="hdr-logo">🏆</div>
+        <div class="hdr-title">Sports Factory<small>Ranchi Inventory</small></div>
+      </div>
+      <div class="hdr-right">
+        <button class="hdr-icon-btn" id="hdrSearchBtn" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- SWAP FEATURE START - history button -->
+        <button class="hdr-icon-btn" id="hdrHistBtn" title="Swap History"><i class="fa-solid fa-clock-rotate-left"></i></button>
+        <!-- SWAP FEATURE END -->
+        <button class="hdr-icon-btn" id="hdrLockBtn" title="Lock"><i class="fa-solid fa-lock"></i></button>
+      </div>
+    </div>
+    <div class="loc-bar">
+      <button class="loc-tab active" data-loc="shop">🏪 Shop</button>
+      <button class="loc-tab" data-loc="warehouse">📦 Warehouse</button>
+      <button class="loc-tab" data-loc="all">🌐 All</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- STATS -->
+    <div class="stat-row">
+      <div class="stat-card sc-blue"><span class="sc-icon">📦</span><div class="sc-num" id="statTotal">0</div><div class="sc-lbl">Total Items</div></div>
+      <div class="stat-card sc-amber"><span class="sc-icon">⚠️</span><div class="sc-num" id="statWarn">0</div><div class="sc-lbl">Low Stock</div></div>
+      <div class="stat-card sc-red"><span class="sc-icon">🛑</span><div class="sc-num" id="statOut">0</div><div class="sc-lbl">Out of Stock</div></div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="qa-grid">
+      <button class="qa-card qa-add" id="qaAdd">
+        <div class="qa-ico"><i class="fa-solid fa-plus"></i></div>
+        <div class="qa-txt"><b>Add Item</b><small>Create new product</small></div>
+      </button>
+      <button class="qa-card qa-cats" id="qaCats">
+        <div class="qa-ico"><i class="fa-solid fa-shapes"></i></div>
+        <div class="qa-txt"><b>Categories</b><small>Manage groups</small></div>
+      </button>
+    </div>
+
+    <!-- BACKUP -->
+    <div class="backup-row">
+      <button class="bk-btn bk-export" id="bkExport">
+        <div class="bk-ico"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+        <div class="bk-txt"><b>Export Backup</b><small>Save JSON file</small></div>
+      </button>
+      <button class="bk-btn bk-import" id="bkImport">
+        <div class="bk-ico"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+        <div class="bk-txt"><b>Import Backup</b><small>Restore data</small></div>
+      </button>
+      <input type="file" id="importFile" accept=".json" style="display:none"/>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" id="searchInp" placeholder="Search items by name..."/>
+    </div>
+
+    <!-- CATEGORY PILLS -->
+    <div class="pills-wrap" id="pillsWrap"></div>
+
+    <!-- SORT / VIEW BAR -->
+    <div class="sort-row">
+      <label for="sortSel">Sort:</label>
+      <select id="sortSel">
+        <option value="name">Name (A-Z)</option>
+        <option value="name_d">Name (Z-A)</option>
+        <option value="stock">Stock (Low first)</option>
+        <option value="stock_d">Stock (High first)</option>
+        <option value="recent">Recently Added</option>
+      </select>
+      <!-- DESKTOP UPGRADE START - view toggle -->
+      <div class="view-toggle" id="viewToggle">
+        <button class="active" data-view="grid"><i class="fa-solid fa-grip"></i>Grid</button>
+        <button data-view="table"><i class="fa-solid fa-table-list"></i>Table</button>
+      </div>
+      <!-- DESKTOP UPGRADE END -->
+      <div class="count-chip" id="countChip">0 items</div>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="sec-hdr">
+      <h2>Inventory</h2>
+      <span id="locLabel">Showing: Shop</span>
+    </div>
+
+    <!-- ITEMS GRID -->
+    <div class="items-grid" id="itemsGrid"></div>
+
+    <!-- DESKTOP UPGRADE START - table view -->
+    <div class="items-table-wrap" id="itemsTableWrap">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Stock Summary</th>
+            <th>Status</th>
+            <th class="t-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTableBody"></tbody>
+      </table>
+    </div>
+    <!-- DESKTOP UPGRADE END -->
+
+    <!-- EMPTY STATE -->
+    <div class="empty" id="emptyState" style="display:none">
+      <span class="ei">📦</span>
+      <p>No items found.<br/>Tap <b>Add Item</b> to get started.</p>
+    </div>
+
+  </main>
+
+  <!-- FAB -->
+  <button class="fab" id="fabAdd"><i class="fa-solid fa-plus"></i> Add</button>
+</div>
+
+<!-- ─── ITEM FORM MODAL ──────────────────────────────── -->
+<div class="modal-ov" id="itemModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-box" style="color:var(--blue2)"></i><span id="itemModalTitle">Add Item</span></div>
+
+    <div class="draft-banner" id="draftBanner">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Draft restored. <a href="#" id="draftClear" style="color:#7c5c00;text-decoration:underline">Clear</a></span>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Item Name</label>
+      <input type="text" class="finput" id="fName" placeholder="e.g., Cricket Bat"/>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Category</label>
+      <select class="finput" id="fCat"></select>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Location</label>
+      <select class="finput" id="fLoc">
+        <option value="shop">🏪 Shop</option>
+        <option value="warehouse">📦 Warehouse</option>
+        <!-- DUAL-LOCATION FEATURE START -->
+        <option value="both">🏪 + 📦 Both (Shop & Warehouse)</option>
+        <!-- DUAL-LOCATION FEATURE END -->
+      </select>
+    </div>
+
+    <!-- DUAL-LOCATION FEATURE START - tip shown only in 'both' mode -->
+    <div class="dual-tip" id="dualTip" style="display:none">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Two separate items will be created — one in Shop, one in Warehouse — sharing the same name, category, and image.</span>
+    </div>
+    <!-- DUAL-LOCATION FEATURE END -->
+
+    <div class="s-band" id="sBandShop"><i class="fa-solid fa-layer-group"></i> <span id="sBandShopText">Stock by Size</span></div>
+    <div class="si-grid">
+      <div class="si-wrap"><label>S</label><input type="number" min="0" id="fS" value="0"/></div>
+      <div class="si-wrap"><label>M</label><input type="number" min="0" id="fM" value="0"/></div>
+      <div class="si-wrap"><label>L</label><input type="number" min="0" id="fL" value="0"/></div>
+      <div class="si-wrap"><label>XL</label><input type="number" min="0" id="fXL" value="0"/></div>
+      <div class="si-wrap"><label>XXL</label><input type="number" min="0" id="fXXL" value="0"/></div>
+    </div>
+
+    <!-- DUAL-LOCATION FEATURE START - second size grid (warehouse) shown only in 'both' mode -->
+    <div id="dualWhBlock" style="display:none;margin-top:14px">
+      <div class="s-band s-band-wh"><i class="fa-solid fa-warehouse"></i> Warehouse Stock by Size</div>
+      <div class="si-grid">
+        <div class="si-wrap"><label>S</label><input type="number" min="0" id="fwS" value="0"/></div>
+        <div class="si-wrap"><label>M</label><input type="number" min="0" id="fwM" value="0"/></div>
+        <div class="si-wrap"><label>L</label><input type="number" min="0" id="fwL" value="0"/></div>
+        <div class="si-wrap"><label>XL</label><input type="number" min="0" id="fwXL" value="0"/></div>
+        <div class="si-wrap"><label>XXL</label><input type="number" min="0" id="fwXXL" value="0"/></div>
+      </div>
+    </div>
+
+    <!-- Totals display: visible in single-location mode (compact) AND in both-mode (detailed) -->
+    <div class="dual-total" id="dualTotalBox" style="margin-top:14px">
+      <div class="dual-total-left"><i class="fa-solid fa-cubes-stacked"></i> <span id="dualTotalLabel">Total Stock</span></div>
+      <div class="dual-total-num" id="dualTotalNum">0<small id="dualTotalSub" style="display:none">across both</small></div>
+    </div>
+    <div class="dual-breakdown" id="dualBreakdown" style="display:none">
+      <span class="dual-bd-chip"><i class="fa-solid fa-store"></i> Shop: <b id="dualShopCount">0</b></span>
+      <span class="dual-bd-chip wh"><i class="fa-solid fa-warehouse"></i> Warehouse: <b id="dualWhCount">0</b></span>
+    </div>
+    <!-- DUAL-LOCATION FEATURE END -->
+
+    <div class="fg" style="margin-top:18px">
+      <label class="flbl">Image</label>
+      <div class="img-zone" id="imgZone">
+        <i class="fa-solid fa-image"></i>
+        <p>Tap to upload an image (max 1.5MB)</p>
+      </div>
+      <div id="imgPrevBox" style="text-align:center"></div>
+      <input type="file" id="fImage" accept="image/*" style="display:none"/>
+    </div>
+
+    <div class="fbtns">
+      <button class="btn-s" id="itemCancel">Cancel</button>
+      <button class="btn-p" id="itemSave"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CATEGORY MODAL ───────────────────────────────── -->
+<div class="modal-ov" id="catModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-shapes" style="color:var(--purple)"></i> Categories</div>
+
+    <div class="cat-count-tip" id="catCountTip">0 categories</div>
+    <div class="cat-list" id="catList"></div>
+
+    <div class="add-cat-row">
+      <button class="emoji-pick" id="emojiPickBtn" type="button">😀</button>
+      <input type="text" class="cat-name-input" id="catNameInp" placeholder="Category name..." maxlength="30"/>
+      <button class="btn-add-cat" id="catAddBtn">Add</button>
+    </div>
+
+    <div class="fbtns" style="margin-top:14px">
+      <button class="btn-p" id="catClose" style="flex:1"><i class="fa-solid fa-check"></i> Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DETAIL MODAL ─────────────────────────────────── -->
+<div class="modal-ov" id="detModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <img class="det-img" id="detImg" style="display:none"/>
+    <div class="det-hdr">
+      <div>
+        <div class="det-name" id="detName"></div>
+        <div class="det-cat" id="detCat"></div>
+      </div>
+      <span class="sbadge" id="detBadge"></span>
+    </div>
+    <div class="det-sg" id="detSizes"></div>
+    <div class="fbtns">
+      <button class="btn-s" id="detClose">Close</button>
+      <!-- SWAP FEATURE START -->
+      <button class="btn-p" id="detSwap" style="display:none;background:linear-gradient(135deg,#00875a,#00b07a);box-shadow:0 6px 20px rgba(0,135,90,.3)"><i class="fa-solid fa-right-left"></i> Swap</button>
+      <!-- SWAP FEATURE END -->
+      <button class="btn-p" id="detEdit"><i class="fa-solid fa-pen"></i> Edit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONFIRM MODAL ────────────────────────────────── -->
+<div class="modal-ov" id="confModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <span class="conf-ico" id="confIco">⚠️</span>
+    <div class="m-title" id="confTitle" style="justify-content:center;text-align:center;display:block">Confirm</div>
+    <p class="conf-msg" id="confMsg">Are you sure?</p>
+    <div class="fbtns">
+      <button class="btn-s" id="confCancel">Cancel</button>
+      <button class="btn-p" id="confOk" style="background:linear-gradient(135deg,#9b0000,#e53935);box-shadow:0 6px 20px rgba(155,0,0,.3)">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- SWAP FEATURE START — swap modal + history modal -->
+<div class="modal-ov" id="swapModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-right-left" style="color:var(--green)"></i> <span id="swapModalTitle">Transfer Stock</span></div>
+
+    <!-- SIMPLE TRANSFER START - friendly direction banner -->
+    <div class="tx-direction" id="swapInfo">
+      <div class="tx-dir-row">
+        <span class="tx-dir-loc" id="txFromLoc">📦 Warehouse</span>
+        <span class="tx-dir-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+        <span class="tx-dir-loc" id="txToLoc">🏪 Shop</span>
+      </div>
+      <div class="tx-dir-item" id="swapInfoText">Transfer stock between locations</div>
+    </div>
+
+    <!-- Quantity steppers -->
+    <div class="tx-step-label"><span class="tx-num">1</span> How many to transfer?</div>
+    <div class="tx-rows" id="swapSizeGrid"></div>
+    <div class="tx-no-stock" id="txNoStock" style="display:none">
+      <span class="ei">📭</span>
+      <p>This item has no stock available to transfer.</p>
+    </div>
+
+    <!-- Total card -->
+    <div class="tx-total-card">
+      <div class="tx-total-label"><i class="fa-solid fa-cubes-stacked"></i> Total Transfer</div>
+      <div class="tx-total-num"><span id="swapTotal">0</span><small>units</small></div>
+    </div>
+
+    <!-- Hidden compatibility nodes (kept so existing JS still finds them) -->
+    <div class="swap-warn" id="swapWarn" style="margin-top:-6px"><i class="fa-solid fa-triangle-exclamation"></i><span id="swapWarnText">Quantity exceeds available stock.</span></div>
+
+    <!-- Staff name -->
+    <div class="tx-step-label"><span class="tx-num">2</span> Who is doing this transfer?</div>
+    <div class="tx-staff-row">
+      <input type="text" class="finput" id="swapStaff" placeholder="Enter staff name" maxlength="60" autocomplete="name"/>
+    </div>
+
+    <!-- Date (defaults to today; staff can adjust if logging late) -->
+    <div class="tx-step-label"><span class="tx-num">3</span> When did this transfer happen?</div>
+    <input type="date" class="finput" id="swapDate"/>
+    <div class="tx-when-tip"><i class="fa-solid fa-circle-info"></i> Defaults to today — change only if you're logging an older transfer.</div>
+
+    <!-- Sticky confirm bar -->
+    <div class="tx-sticky-bar">
+      <div class="fbtns">
+        <button class="btn-s" id="swapCancel">Cancel</button>
+        <button class="btn-p btn-confirm-tx" id="swapConfirm"><i class="fa-solid fa-check"></i> Confirm Transfer</button>
+      </div>
+    </div>
+    <!-- SIMPLE TRANSFER END -->
+  </div>
+</div>
+
+<div class="modal-ov" id="histModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--blue2)"></i> Swap History</div>
+
+    <div class="hist-filter-row">
+      <input type="search" id="histSearchInp" placeholder="Search item or staff..."/>
+      <button class="hist-clear-btn" id="histClearBtn" title="Clear all history"><i class="fa-solid fa-trash"></i> Clear</button>
+    </div>
+    <div class="hist-count-tip" id="histCountTip">0 swaps recorded</div>
+    <div class="hist-list" id="histList"></div>
+    <!-- FIX #9 START - load-more button for pagination -->
+    <button class="hist-load-more" id="histLoadMore" style="display:none"><i class="fa-solid fa-chevron-down"></i> <span id="histLoadMoreText">Load older transfers</span></button>
+    <!-- FIX #9 END -->
+    <div class="hist-empty" id="histEmpty" style="display:none">
+      <span class="ei">📋</span>
+      <p style="font-size:.92rem;line-height:1.6">No swap history yet.<br/>Swap items from warehouse to shop to see them here.</p>
+    </div>
+
+    <div class="fbtns" style="margin-top:14px">
+      <button class="btn-p" id="histClose" style="flex:1"><i class="fa-solid fa-check"></i> Done</button>
+    </div>
+  </div>
+</div>
+<!-- SWAP FEATURE END -->
+
+<!-- FIX #12 START — Trash modal (soft-delete restore) -->
+<div class="modal-ov" id="trashModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-trash-can-arrow-up" style="color:var(--text2)"></i> Recently Deleted</div>
+
+    <div class="trash-tip">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Deleted items stay here for 30 days. After that, expired items can be removed permanently using the buttons below.</span>
+    </div>
+
+    <div class="trash-list" id="trashList"></div>
+    <div class="trash-empty" id="trashEmpty" style="display:none">
+      <span class="ei">🗑️</span>
+      <p style="font-size:.9rem;line-height:1.6">No deleted items.<br/>Items you delete can be restored from here.</p>
+    </div>
+
+    <div class="trash-foot-row">
+      <button class="btn-s" id="trashClose" style="flex:1"><i class="fa-solid fa-xmark"></i> Close</button>
+      <button class="btn-p" id="trashEmptyExpired" style="flex:1;background:linear-gradient(135deg,#9b0000,#e53935);box-shadow:0 6px 20px rgba(155,0,0,.3)"><i class="fa-solid fa-broom"></i> Empty Expired</button>
+    </div>
+  </div>
+</div>
+<!-- FIX #12 END -->
+
+<!-- FIX #7 START — Anomaly modal (rollback failures) -->
+<div class="modal-ov" id="anomalyModal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i> Stock Anomalies</div>
+
+    <div class="anomaly-warn-bar">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>Transfers below failed mid-way and the stock could not be automatically restored. Please verify the affected items physically and mark each as resolved when done.</span>
+    </div>
+
+    <div id="anomalyList"></div>
+    <div class="anomaly-empty" id="anomalyEmpty" style="display:none">
+      <span class="ei">✅</span>
+      <p style="font-size:.9rem;line-height:1.6">No stock anomalies.<br/>Everything is in order.</p>
+    </div>
+
+    <div class="fbtns" style="margin-top:12px">
+      <button class="btn-p" id="anomalyClose" style="flex:1"><i class="fa-solid fa-check"></i> Done</button>
+    </div>
+  </div>
+</div>
+<!-- FIX #7 END -->
+
+<script>
+/* ═════════════════════════════════════════════════════════
+   STATE & CONSTANTS
+   ═════════════════════════════════════════════════════════ */
+const PIN = '1234'; // fallback PIN (kept identical to mobile behavior)
+const SIZES = ['S','M','L','XL','XXL'];
+const DEFAULT_CATS = [
+  {id:'jersey', emoji:'👕', name:'Jerseys'},
+  {id:'shoes',  emoji:'👟', name:'Shoes'},
+  {id:'gear',   emoji:'🏏', name:'Gear'},
+  {id:'access', emoji:'🎽', name:'Accessories'}
+];
+const EMOJI_OPTIONS = ['👕','👟','🏏','🎽','⚽','🏀','🎾','🏐','🥊','🏸','🎿','🛹','🥋','🏑','🏓','🥎','⛳','🚴','🧤','👜','🎒','🧢','🧦','🩳','🥅','🎯','🪀'];
+
+let state = {
+  items:{},        // {id:{...}}
+  cats:[],         // [{id,emoji,name}]
+  loc:'shop',      // shop | warehouse | all
+  cat:'all',       // active category filter
+  search:'',
+  sort:'name',
+  view:'grid',     // DESKTOP UPGRADE: grid | table
+  editingId:null,
+  imgData:null,
+  emojiIdx:0,
+  unsubItems:null,
+  unsubCats:null,
+  /* FIXES #5 #7 #12 — listener handles + new data nodes */
+  _itemsCb:null, _catsCb:null, _historyCb:null, _anomaliesCb:null, _trashCb:null,
+  _uiBound:false,
+  anomalies:{},   // mirror of swap_anomalies Firebase node
+  trash:{}        // mirror of trash Firebase node
+};
+
+const DRAFT_KEY = 'sfr_item_draft_v1';
+const LOC_KEY   = 'sfr_loc_v1';
+const VIEW_KEY  = 'sfr_view_v1'; // DESKTOP UPGRADE
+
+/* ═════════════════════════════════════════════════════════
+   LOADING SYSTEM START — helpers used app-wide
+   ═════════════════════════════════════════════════════════ */
+const Loader = (function(){
+  const el = ()=>document.getElementById('globalLoader');
+  let initialDone = false;
+  let safetyTimer = null;
+
+  function showInitial(msg){
+    const root = el(); if(!root) return;
+    root.style.display='flex';
+    // small delay so the browser commits display:flex before fading in
+    requestAnimationFrame(()=>root.classList.remove('hide'));
+    setSub(msg||'Connecting to inventory…');
+    document.getElementById('glErr').classList.remove('show');
+    document.getElementById('glErr').textContent='';
+    document.getElementById('glRetry').classList.remove('show');
+    initialDone = false;
+    // Safety: if Firebase callback never fires after 15s, show retry
+    clearTimeout(safetyTimer);
+    safetyTimer = setTimeout(()=>{
+      if(!initialDone){
+        showError('This is taking longer than expected. Check your internet connection.');
+      }
+    }, 15000);
+  }
+  function setSub(msg){
+    const sub = document.getElementById('glSub');
+    if(sub) sub.textContent = msg;
+  }
+  function showError(msg){
+    const errEl = document.getElementById('glErr');
+    const retry = document.getElementById('glRetry');
+    if(errEl){ errEl.textContent = msg; errEl.classList.add('show'); }
+    if(retry) retry.classList.add('show');
+  }
+  function hide(){
+    initialDone = true;
+    clearTimeout(safetyTimer);
+    const root = el(); if(!root) return;
+    root.classList.add('hide');
+    // Remove from DOM after fade so it doesn't intercept clicks
+    setTimeout(()=>{ if(root.parentNode) root.style.display='none'; }, 400);
+  }
+  return { showInitial, setSub, showError, hide };
+})();
+
+// Toast for non-blocking messages (errors, successes)
+let _toastTimer=null;
+function toast(msg, type){
+  const t = document.getElementById('toast');
+  const m = document.getElementById('toastMsg');
+  if(!t||!m) return;
+  t.classList.remove('err','ok');
+  if(type==='err') t.classList.add('err');
+  else if(type==='ok') t.classList.add('ok');
+  // Update icon
+  const icon = t.querySelector('i');
+  if(icon){
+    icon.className = type==='err' ? 'fa-solid fa-circle-exclamation'
+                   : type==='ok'  ? 'fa-solid fa-circle-check'
+                   : 'fa-solid fa-circle-info';
+  }
+  m.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>t.classList.remove('show'), type==='err' ? 4500 : 2500);
+}
+
+// Wrap a click-handler so the button is busy/disabled during the async work.
+// Prevents double-submission and gives visual feedback.
+function withBusy(btn, fn){
+  return async function(...args){
+    if(!btn || btn.classList.contains('is-busy') || btn.disabled) return;
+    btn.classList.add('is-busy');
+    btn.disabled = true;
+    try { await fn.apply(this, args); }
+    catch(err){ toast(err && err.message ? err.message : String(err), 'err'); }
+    finally {
+      btn.classList.remove('is-busy');
+      btn.disabled = false;
+    }
+  };
+}
+/* LOADING SYSTEM END */
+
+/* ═════════════════════════════════════════════════════════
+   LOGIN
+   ═════════════════════════════════════════════════════════ */
+let pinBuf = '';
+function buildPinPad(){
+  const grid = document.getElementById('pinGrid');
+  const keys = ['1','2','3','4','5','6','7','8','9','del','0','ok'];
+  grid.innerHTML='';
+  keys.forEach(k=>{
+    const b=document.createElement('button');
+    b.className='pkey'+(k==='del'?' del':k==='ok'?' ok':'');
+    b.innerHTML = k==='del' ? '<i class="fa-solid fa-delete-left"></i>' : k==='ok' ? '<i class="fa-solid fa-check"></i>' : k;
+    b.addEventListener('click',()=>handlePin(k));
+    grid.appendChild(b);
+  });
+}
+function handlePin(k){
+  if(k==='del'){pinBuf=pinBuf.slice(0,-1);}
+  else if(k==='ok'){return checkPin();}
+  else if(pinBuf.length<4){pinBuf+=k;}
+  drawDots();
+  if(pinBuf.length===4) setTimeout(checkPin,150);
+}
+function drawDots(){
+  document.querySelectorAll('#pinDots .pdot').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));
+}
+function checkPin(){
+  const err = document.getElementById('pinErr');
+  if(pinBuf===PIN){
+    err.textContent='';
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    initApp();
+  } else {
+    err.textContent='Incorrect PIN. Try again.';
+    pinBuf=''; drawDots();
+  }
+}
+buildPinPad();
+
+/* LOADING SYSTEM START - retry button just reloads the page (simplest reliable recovery) */
+(function(){
+  const r = document.getElementById('glRetry');
+  if(r) r.addEventListener('click', ()=>location.reload());
+})();
+/* LOADING SYSTEM END */
+
+/* ═════════════════════════════════════════════════════════
+   FIREBASE — items + cats listeners
+   ═════════════════════════════════════════════════════════ */
+function initApp(){
+  // restore location preference
+  const savedLoc = localStorage.getItem(LOC_KEY);
+  if(savedLoc) { state.loc = savedLoc; }
+  document.querySelectorAll('.loc-tab').forEach(b=>b.classList.toggle('active', b.dataset.loc===state.loc));
+
+  // DESKTOP UPGRADE START - restore view preference (desktop only)
+  const savedView = localStorage.getItem(VIEW_KEY);
+  if(savedView && window.innerWidth >= 1024) state.view = savedView;
+  syncViewToggle();
+  // DESKTOP UPGRADE END
+
+  /* FIX #5 — DUPLICATE-LISTENER GUARD START
+     Detach any previous listeners first (in case initApp is called again
+     after a lock/unlock cycle), then attach fresh ones. Also ensure
+     bindUI() only runs once for the lifetime of the page. */
+  if(state._itemsCb)        window._db.ref('items').off('value', state._itemsCb);
+  if(state._catsCb)         window._db.ref('categories').off('value', state._catsCb);
+  if(state._historyCb)      window._db.ref('swap_history').off('value', state._historyCb);
+  if(state._anomaliesCb)    window._db.ref('swap_anomalies').off('value', state._anomaliesCb);
+  if(state._trashCb)        window._db.ref('trash').off('value', state._trashCb);
+  /* FIX #5 END */
+
+  /* LOADING SYSTEM START - track first-snapshot completion */
+  Loader.showInitial('Loading inventory…');
+  let gotItems = false, gotCats = false;
+  const maybeHide = ()=>{ if(gotItems && gotCats) Loader.hide(); };
+  /* LOADING SYSTEM END */
+
+  // listen for items
+  state._itemsCb = window._db.ref('items').on('value', snap=>{
+    state.items = snap.val() || {};
+    render();
+    /* LOADING SYSTEM */ if(!gotItems){ gotItems = true; Loader.setSub('Loading categories…'); maybeHide(); }
+  }, err=>{
+    /* LOADING SYSTEM */ Loader.showError('Could not load inventory: '+(err && err.message ? err.message : err));
+  });
+  // listen for cats
+  state._catsCb = window._db.ref('categories').on('value', snap=>{
+    let c = snap.val();
+    if(!c){
+      // seed default cats once
+      const seed = {};
+      DEFAULT_CATS.forEach(x=>seed[x.id]=x);
+      window._db.ref('categories').set(seed);
+      c = seed;
+    }
+    state.cats = Object.values(c).sort((a,b)=>a.name.localeCompare(b.name));
+    renderPills();
+    renderCatList();
+    renderCatSelect();
+    render();
+    /* LOADING SYSTEM */ if(!gotCats){ gotCats = true; maybeHide(); }
+  }, err=>{
+    /* LOADING SYSTEM */ Loader.showError('Could not load categories: '+(err && err.message ? err.message : err));
+  });
+
+  /* SWAP FEATURE START - listen for swap history (FIX #9: cap to recent only) */
+  // Only load the most recent 500 records; older ones must be archived.
+  // This prevents the modal from rendering thousands of cards on open.
+  state._historyCb = window._db.ref('swap_history').limitToLast(500).on('value', snap=>{
+    swapHistoryData = snap.val() || {};
+    // Re-render history modal if it is currently open
+    if(document.getElementById('histModal').classList.contains('open')){
+      renderHistoryList();
+    }
+  });
+  /* SWAP FEATURE END */
+
+  /* FIX #7 START - listen for stock anomalies (rollback failures) */
+  state._anomaliesCb = window._db.ref('swap_anomalies').on('value', snap=>{
+    state.anomalies = snap.val() || {};
+    refreshAnomalyBadge();
+  });
+  /* FIX #7 END */
+
+  /* FIX #12 START - listen for trash (soft-deleted items) */
+  state._trashCb = window._db.ref('trash').on('value', snap=>{
+    state.trash = snap.val() || {};
+    purgeOldTrashOnce();
+    refreshTrashBadge();
+    if(document.getElementById('trashModal').classList.contains('open')){
+      renderTrashList();
+    }
+  });
+  /* FIX #12 END */
+
+  /* FIX #5 — bind UI only once */
+  if(!state._uiBound){
+    bindUI();
+    state._uiBound = true;
+  }
+  checkDraft();
+}
+
+/* ═════════════════════════════════════════════════════════
+   RENDER — stats + items grid + (desktop) table
+   ═════════════════════════════════════════════════════════ */
+function totalForItem(it){
+  if(!it.sizes) return 0;
+  return SIZES.reduce((s,k)=>s+(parseInt(it.sizes[k])||0),0);
+}
+function statusFor(qty){
+  if(qty===0) return 'low';
+  if(qty<=5)  return 'warn';
+  return 'ok';
+}
+function getCatById(id){
+  return state.cats.find(c=>c.id===id) || {emoji:'📦',name:'Uncategorized'};
+}
+function filterAndSortItems(){
+  let arr = Object.entries(state.items).map(([id,it])=>({id,...it}));
+  // location filter
+  if(state.loc!=='all') arr = arr.filter(x=>x.location===state.loc);
+  // category filter
+  if(state.cat==='lowstock'){
+    arr = arr.filter(x=>{const t=totalForItem(x); return t<=5;});
+  } else if(state.cat!=='all'){
+    arr = arr.filter(x=>x.category===state.cat);
+  }
+  // search
+  if(state.search.trim()){
+    const q = state.search.toLowerCase();
+    arr = arr.filter(x=>(x.name||'').toLowerCase().includes(q));
+  }
+  // sort
+  arr.sort((a,b)=>{
+    switch(state.sort){
+      case 'name':    return (a.name||'').localeCompare(b.name||'');
+      case 'name_d':  return (b.name||'').localeCompare(a.name||'');
+      case 'stock':   return totalForItem(a)-totalForItem(b);
+      case 'stock_d': return totalForItem(b)-totalForItem(a);
+      case 'recent':  return (b.created||0)-(a.created||0);
+    }
+    return 0;
+  });
+  return arr;
+}
+function render(){
+  const arr = filterAndSortItems();
+
+  // stats based on current location filter (not category) for accurate dashboard
+  let allInLoc = Object.values(state.items);
+  if(state.loc!=='all') allInLoc = allInLoc.filter(x=>x.location===state.loc);
+  let total=allInLoc.length, warn=0, out=0;
+  allInLoc.forEach(it=>{
+    const t = totalForItem(it);
+    if(t===0) out++;
+    else if(t<=5) warn++;
+  });
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statWarn').textContent  = warn;
+  document.getElementById('statOut').textContent   = out;
+
+  document.getElementById('countChip').textContent = `${arr.length} item${arr.length===1?'':'s'}`;
+  document.getElementById('locLabel').textContent  = `Showing: ${state.loc==='shop'?'Shop':state.loc==='warehouse'?'Warehouse':'All Locations'}`;
+
+  // empty state vs grid/table
+  const grid  = document.getElementById('itemsGrid');
+  const tWrap = document.getElementById('itemsTableWrap');
+  const empty = document.getElementById('emptyState');
+
+  if(arr.length===0){
+    grid.style.display='none';
+    tWrap.style.display='none';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+
+  // DESKTOP UPGRADE START - choose view
+  const isDesktop = window.innerWidth >= 1024;
+  if(state.view==='table' && isDesktop){
+    grid.style.display='none';
+    tWrap.style.display='block';
+    renderTable(arr);
+  } else {
+    tWrap.style.display='none';
+    grid.style.display='grid';
+    renderGrid(arr);
+  }
+  // DESKTOP UPGRADE END
+}
+
+function renderGrid(arr){
+  const grid = document.getElementById('itemsGrid');
+  grid.innerHTML='';
+  arr.forEach(it=>{
+    const cat = getCatById(it.category);
+    const t   = totalForItem(it);
+    const st  = statusFor(t);
+    const barColor = st==='low' ? 'linear-gradient(90deg,#9b0000,#e53935)' : st==='warn' ? 'linear-gradient(90deg,#b34500,#f4511e)' : 'linear-gradient(90deg,#0044b8,#1a6fff)';
+    const badgeCls = st==='low'?'sb-low':st==='warn'?'sb-warn':'sb-ok';
+    const badgeTxt = st==='low'?'<i class="fa-solid fa-circle-xmark"></i> Out of Stock' : st==='warn'?'<i class="fa-solid fa-triangle-exclamation"></i> Low Stock':'<i class="fa-solid fa-circle-check"></i> In Stock';
+
+    const card = document.createElement('div');
+    card.className='item-card';
+    /* SWAP FEATURE START - swap button shown for any item with stock (both directions supported) */
+    const swapBtnHtml = (t>0)
+      ? `<button class="cbtn cbs" data-act="swap" title="${it.location==='warehouse'?'Transfer to Shop':'Transfer to Warehouse'}"><i class="fa-solid fa-right-left"></i></button>`
+      : '';
+    /* SWAP FEATURE END */
+    card.innerHTML = `
+      <div class="card-bar" style="background:${barColor}"></div>
+      <div class="card-img-box">
+        ${it.image ? `<img class="card-img" src="${it.image}" alt=""/>` : `<div class="card-ph">${cat.emoji}</div>`}
+      </div>
+      <div class="card-body">
+        <div class="card-name" title="${escAttr(it.name)}">${escHtml(it.name||'Unnamed')}</div>
+        <div class="card-cat" style="color:var(--blue2)">${cat.emoji} ${escHtml(cat.name)}</div>
+        <span class="sbadge ${badgeCls}">${badgeTxt}</span>
+        <div class="sz-row">
+          ${SIZES.map(s=>`<div class="sz-cell"><span class="szl">${s}</span><span class="szv">${(it.sizes&&it.sizes[s])||0}</span></div>`).join('')}
+        </div>
+        <div class="card-btns">
+          <button class="cbtn cbe" data-act="edit"><i class="fa-solid fa-pen"></i> Edit</button>
+          ${swapBtnHtml}
+          <button class="cbtn cbd" data-act="del"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>`;
+    card.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button');
+      if(btn){
+        e.stopPropagation();
+        if(btn.dataset.act==='edit') openItemModal(it);
+        else if(btn.dataset.act==='del') confirmDelete(it);
+        /* SWAP FEATURE START */
+        else if(btn.dataset.act==='swap') openSwapModal(it);
+        /* SWAP FEATURE END */
+        return;
+      }
+      openDetailModal(it);
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* DESKTOP UPGRADE START - table renderer */
+function renderTable(arr){
+  const tbody = document.getElementById('itemsTableBody');
+  tbody.innerHTML='';
+  arr.forEach(it=>{
+    const cat = getCatById(it.category);
+    const t   = totalForItem(it);
+    const st  = statusFor(t);
+    const badgeCls = st==='low'?'sb-low':st==='warn'?'sb-warn':'sb-ok';
+    const badgeTxt = st==='low'?'Out of Stock':st==='warn'?'Low Stock':'In Stock';
+    const breakdown = SIZES.map(s=>`${s}:${(it.sizes&&it.sizes[s])||0}`).join(' · ');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="t-name-cell">
+          <div class="t-thumb">${it.image?`<img src="${it.image}" alt=""/>`:cat.emoji}</div>
+          <div>
+            <div>${escHtml(it.name||'Unnamed')}</div>
+            <small style="color:var(--text2);font-weight:500;font-size:.72rem">${it.location==='shop'?'🏪 Shop':'📦 Warehouse'}</small>
+          </div>
+        </div>
+      </td>
+      <td><span class="t-cat-pill">${cat.emoji} ${escHtml(cat.name)}</span></td>
+      <td><div class="t-stock-summary">${t} units<small>${breakdown}</small></div></td>
+      <td><span class="sbadge ${badgeCls}" style="margin:0">${badgeTxt}</span></td>
+      <td class="t-actions">
+        <button class="t-edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
+        ${(t>0)?`<button class="t-swap" title="${it.location==='warehouse'?'Transfer to Shop':'Transfer to Warehouse'}" style="color:var(--green)"><i class="fa-solid fa-right-left"></i></button>`:''}
+        <button class="t-del" title="Delete"><i class="fa-solid fa-trash"></i></button>
+      </td>`;
+    tr.querySelector('.t-edit').addEventListener('click',(e)=>{e.stopPropagation();openItemModal(it);});
+    tr.querySelector('.t-del').addEventListener('click',(e)=>{e.stopPropagation();confirmDelete(it);});
+    /* SWAP FEATURE START */
+    const swapBtn = tr.querySelector('.t-swap');
+    if(swapBtn) swapBtn.addEventListener('click',(e)=>{e.stopPropagation();openSwapModal(it);});
+    /* SWAP FEATURE END */
+    tr.addEventListener('click',()=>openDetailModal(it));
+    tr.style.cursor='pointer';
+    tbody.appendChild(tr);
+  });
+}
+function syncViewToggle(){
+  document.querySelectorAll('#viewToggle button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view===state.view);
+  });
+}
+/* DESKTOP UPGRADE END */
+
+/* ═════════════════════════════════════════════════════════
+   PILLS / CATEGORY SELECT / CAT MANAGER
+   ═════════════════════════════════════════════════════════ */
+function renderPills(){
+  const wrap = document.getElementById('pillsWrap');
+  wrap.innerHTML='';
+  const mk = (id,label,extraCls='')=>{
+    const b=document.createElement('button');
+    b.className='pill '+extraCls+(state.cat===id?' active':'');
+    b.innerHTML=label;
+    b.addEventListener('click',()=>{state.cat=id;renderPills();render();});
+    wrap.appendChild(b);
+  };
+  mk('all','🌐 All');
+  mk('lowstock','⚠️ Low Stock','p-low');
+  state.cats.forEach(c=>mk(c.id, `${c.emoji} ${escHtml(c.name)}`));
+}
+function renderCatSelect(){
+  const sel = document.getElementById('fCat');
+  sel.innerHTML='';
+  state.cats.forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c.id; o.textContent=`${c.emoji} ${c.name}`;
+    sel.appendChild(o);
+  });
+}
+function renderCatList(){
+  const list = document.getElementById('catList');
+  const tip  = document.getElementById('catCountTip');
+  tip.textContent = `${state.cats.length} categor${state.cats.length===1?'y':'ies'}`;
+  list.innerHTML='';
+  if(state.cats.length===0){
+    list.innerHTML='<div class="no-cats">No categories yet. Add one below 👇</div>';
+    return;
+  }
+  state.cats.forEach(c=>{
+    const row=document.createElement('div');
+    row.className='cat-row';
+    row.innerHTML=`<div class="cat-em">${c.emoji}</div><div class="cat-nm">${escHtml(c.name)}</div><button class="cat-del" data-id="${c.id}"><i class="fa-solid fa-trash"></i></button>`;
+    row.querySelector('.cat-del').addEventListener('click',()=>{
+      openConfirm({
+        ico:'🗑️',title:'Delete category?',
+        msg:`Delete "${c.name}"? Items in this category will keep their tag but it won't appear in filters.`,
+        onOk:()=>window._db.ref('categories/'+c.id).remove()
+      });
+    });
+    list.appendChild(row);
+  });
+}
+
+/* ═════════════════════════════════════════════════════════
+   ITEM MODAL — add / edit / draft
+   ═════════════════════════════════════════════════════════ */
+function openItemModal(item){
+  state.editingId = item ? item.id : null;
+  state.imgData   = item ? (item.image||null) : null;
+  document.getElementById('itemModalTitle').textContent = item?'Edit Item':'Add Item';
+  document.getElementById('fName').value = item?.name || '';
+  document.getElementById('fCat').value  = item?.category || (state.cats[0]?.id || '');
+  document.getElementById('fLoc').value  = item?.location || (state.loc==='all'?'shop':state.loc);
+  SIZES.forEach(s=>{
+    const id = 'f'+s;
+    document.getElementById(id).value = (item?.sizes?.[s]) || 0;
+  });
+  /* DUAL-LOCATION FEATURE START - reset warehouse inputs and disable 'both' option when editing */
+  SIZES.forEach(s=>{
+    const wEl = document.getElementById('fw'+s);
+    if(wEl) wEl.value = 0;
+  });
+  // 'Both' is only valid for new items (creating two records). Disable for edits.
+  const bothOpt = document.querySelector('#fLoc option[value="both"]');
+  if(bothOpt) bothOpt.disabled = !!item;
+  refreshDualMode();
+  /* DUAL-LOCATION FEATURE END */
+  drawImgPreview();
+  document.getElementById('itemModal').classList.add('open');
+
+  // load draft only when adding new
+  if(!item) loadDraft();
+}
+function closeItemModal(){
+  document.getElementById('itemModal').classList.remove('open');
+  state.editingId=null; state.imgData=null;
+  document.getElementById('draftBanner').classList.remove('show');
+}
+function getFormData(){
+  const sizes={};
+  SIZES.forEach(s=>sizes[s]=parseInt(document.getElementById('f'+s).value)||0);
+  /* DUAL-LOCATION FEATURE START - capture warehouse sizes if 'both' mode is on */
+  const loc = document.getElementById('fLoc').value;
+  const whSizes = {};
+  SIZES.forEach(s=>{
+    const el = document.getElementById('fw'+s);
+    whSizes[s] = el ? (parseInt(el.value)||0) : 0;
+  });
+  /* DUAL-LOCATION FEATURE END */
+  return {
+    name:     document.getElementById('fName').value.trim(),
+    category: document.getElementById('fCat').value,
+    location: loc,
+    sizes,
+    image:    state.imgData,
+    /* DUAL-LOCATION FEATURE START */
+    whSizes
+    /* DUAL-LOCATION FEATURE END */
+  };
+}
+async function saveItem(){
+  const saveBtn = document.getElementById('itemSave');
+  const data = getFormData();
+  if(!data.name){ toast('Please enter an item name.', 'err'); return; }
+  if(!data.category){ toast('Please pick or create a category first.', 'err'); return; }
+
+  if(saveBtn){ saveBtn.classList.add('is-busy'); saveBtn.disabled = true; }
+
+  try {
+    /* DUAL-LOCATION FEATURE START - handle 'both' mode by creating TWO items */
+    if(data.location === 'both'){
+      if(state.editingId){
+        toast('"Both" location is only available when adding a new item.', 'err');
+        return;
+      }
+      const shopTotal = SIZES.reduce((s,k)=>s+(data.sizes[k]||0),0);
+      const whTotal   = SIZES.reduce((s,k)=>s+(data.whSizes[k]||0),0);
+      if(shopTotal===0 && whTotal===0){
+        toast('Please enter at least one stock quantity.', 'err');
+        return;
+      }
+      const now = Date.now();
+      const updates = {};
+      if(shopTotal > 0){
+        const shopId = window._db.ref('items').push().key;
+        updates['items/'+shopId] = {
+          name: data.name, category: data.category, location: 'shop',
+          sizes: data.sizes, image: data.image || null,
+          created: now, updated: now
+        };
+      }
+      if(whTotal > 0){
+        const whId = window._db.ref('items').push().key;
+        updates['items/'+whId] = {
+          name: data.name, category: data.category, location: 'warehouse',
+          sizes: data.whSizes, image: data.image || null,
+          created: now, updated: now
+        };
+      }
+      await window._db.ref().update(updates);
+      clearDraft();
+      closeItemModal();
+      toast('Item(s) saved', 'ok');
+      return;
+    }
+    /* DUAL-LOCATION FEATURE END */
+
+    const ref = state.editingId
+      ? window._db.ref('items/'+state.editingId)
+      : window._db.ref('items').push();
+    /* DUAL-LOCATION FEATURE START - strip helper-only field before persisting */
+    const payload = {
+      name: data.name,
+      category: data.category,
+      location: data.location,
+      sizes: data.sizes,
+      image: data.image
+    };
+    /* DUAL-LOCATION FEATURE END */
+    if(!state.editingId) payload.created = Date.now();
+    payload.updated = Date.now();
+    await ref.set(payload);
+    clearDraft();
+    closeItemModal();
+    toast(state.editingId ? 'Item updated' : 'Item saved', 'ok');
+  } catch(e){
+    toast('Save failed: '+(e && e.message ? e.message : e), 'err');
+  } finally {
+    if(saveBtn){ saveBtn.classList.remove('is-busy'); saveBtn.disabled = false; }
+  }
+}
+/* FIX #8 START — aggressive name normalization for merge-matching only.
+   Display name is preserved exactly as the user typed it. */
+function normalizeName(s){
+  return String(s||'')
+    .toLowerCase()
+    .replace(/[^\w\s]/g,' ')   // strip punctuation -> space
+    .replace(/\s+/g,' ')       // collapse whitespace
+    .trim();
+}
+/* FIX #8 END */
+
+/* FIX #12 START — soft delete: move item to trash/{id} with deletedAt timestamp.
+   Restoration reverses the move. Items older than 30 days are eligible
+   for permanent purge, but we never auto-purge silently — staff click "Empty Expired". */
+const TRASH_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+let _purgedThisSession = false;
+
+function confirmDelete(item){
+  openConfirm({
+    ico:'🗑️', title:'Delete item?',
+    msg:`Move "${item.name||'this item'}" to Recently Deleted? You can restore it for 30 days from the sidebar.`,
+    onOk: async ()=>{
+      try {
+        // Move to trash node with deletedAt timestamp
+        const trashRecord = {
+          ...item,
+          deletedAt: Date.now()
+        };
+        // The item.id field shouldn't be in the payload — it's the key
+        delete trashRecord.id;
+        await window._db.ref('trash/'+item.id).set(trashRecord);
+        await window._db.ref('items/'+item.id).remove();
+        toast('Moved to Recently Deleted', 'ok');
+      } catch(e){
+        toast('Could not delete: '+(e && e.message ? e.message : e), 'err');
+      }
+    }
+  });
+}
+
+async function restoreFromTrash(trashId){
+  const tr = state.trash && state.trash[trashId];
+  if(!tr){ toast('Item no longer in trash.', 'err'); return; }
+  try {
+    const restored = {...tr};
+    delete restored.deletedAt;
+    // Reuse the original ID so any references (e.g. unrelated history) stay valid
+    await window._db.ref('items/'+trashId).set(restored);
+    await window._db.ref('trash/'+trashId).remove();
+    toast('Item restored', 'ok');
+  } catch(e){
+    toast('Could not restore: '+(e && e.message ? e.message : e), 'err');
+  }
+}
+
+function purgeOldTrashOnce(){
+  // Only auto-flag visually; never auto-delete without user confirmation.
+  // This is just a hook for future scheduled cleanup; no deletion happens here.
+  _purgedThisSession = true;
+}
+
+function refreshTrashBadge(){
+  const count = Object.keys(state.trash||{}).length;
+  const pill = document.getElementById('sbTrashPill');
+  if(!pill) return;
+  pill.textContent = count;
+  pill.classList.toggle('show', count > 0);
+}
+
+function openTrashModal(){
+  renderTrashList();
+  document.getElementById('trashModal').classList.add('open');
+}
+
+function renderTrashList(){
+  const list = document.getElementById('trashList');
+  const empty = document.getElementById('trashEmpty');
+  list.innerHTML = '';
+  const arr = Object.entries(state.trash||{}).map(([id,t])=>({id, ...t}));
+  arr.sort((a,b)=>(b.deletedAt||0)-(a.deletedAt||0));
+  if(arr.length === 0){
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  list.style.display = 'flex';
+  const now = Date.now();
+  arr.forEach(t=>{
+    const cat = getCatById(t.category);
+    const ageMs = now - (t.deletedAt||0);
+    const daysLeft = Math.max(0, Math.ceil((TRASH_TTL_MS - ageMs)/(24*60*60*1000)));
+    const expired = ageMs > TRASH_TTL_MS;
+    const expiringSoon = !expired && daysLeft <= 3;
+    const metaCls = (expired || expiringSoon) ? 'trash-meta expiring' : 'trash-meta';
+    const metaText = expired
+      ? '<b>Expired</b> — eligible for permanent removal'
+      : `<b>${daysLeft} day${daysLeft===1?'':'s'}</b> until permanent removal`;
+    const card = document.createElement('div');
+    card.className = 'trash-card';
+    card.innerHTML = `
+      <div class="trash-thumb">${t.image?`<img src="${t.image}" alt=""/>`:cat.emoji}</div>
+      <div class="trash-info">
+        <div class="trash-name">${escHtml(t.name||'Unnamed')}</div>
+        <div class="${metaCls}">${cat.emoji} ${escHtml(cat.name)} · ${t.location==='shop'?'🏪 Shop':'📦 Warehouse'} · ${metaText}</div>
+      </div>
+      <div class="trash-actions">
+        <button class="trash-restore" data-act="restore"><i class="fa-solid fa-rotate-left"></i> Restore</button>
+        <button class="trash-purge" data-act="purge" title="Delete permanently"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    `;
+    card.querySelector('[data-act="restore"]').addEventListener('click', ()=>restoreFromTrash(t.id));
+    card.querySelector('[data-act="purge"]').addEventListener('click', ()=>{
+      openConfirm({
+        ico:'⚠️', title:'Delete permanently?',
+        msg:`Permanently delete "${t.name||'this item'}"? This cannot be undone.`,
+        onOk: async ()=>{
+          try { await window._db.ref('trash/'+t.id).remove(); toast('Permanently deleted', 'ok'); }
+          catch(e){ toast('Could not purge: '+(e && e.message ? e.message : e), 'err'); }
+        }
+      });
+    });
+    list.appendChild(card);
+  });
+}
+
+function emptyExpiredTrash(){
+  const arr = Object.entries(state.trash||{});
+  const now = Date.now();
+  const expired = arr.filter(([,t]) => (now - (t.deletedAt||0)) > TRASH_TTL_MS);
+  if(expired.length === 0){
+    toast('No expired items to remove.', 'info');
+    return;
+  }
+  openConfirm({
+    ico:'🧹', title:'Empty expired items?',
+    msg:`Permanently delete ${expired.length} expired item${expired.length===1?'':'s'}? This cannot be undone.`,
+    onOk: async ()=>{
+      try {
+        const updates = {};
+        expired.forEach(([id])=> updates['trash/'+id] = null);
+        await window._db.ref().update(updates);
+        toast(`Removed ${expired.length} expired item${expired.length===1?'':'s'}`, 'ok');
+      } catch(e){
+        toast('Could not empty trash: '+(e && e.message ? e.message : e), 'err');
+      }
+    }
+  });
+}
+/* FIX #12 END */
+
+/* FIX #7 START — Anomaly viewer + resolve action */
+function refreshAnomalyBadge(){
+  const count = Object.keys(state.anomalies||{}).length;
+  const pill = document.getElementById('sbAnomalyPill');
+  if(!pill) return;
+  pill.textContent = count;
+  pill.classList.toggle('show', count > 0);
+}
+
+function openAnomalyModal(){
+  renderAnomalyList();
+  document.getElementById('anomalyModal').classList.add('open');
+}
+
+function renderAnomalyList(){
+  const list = document.getElementById('anomalyList');
+  const empty = document.getElementById('anomalyEmpty');
+  list.innerHTML = '';
+  const arr = Object.entries(state.anomalies||{}).map(([id,a])=>({id, ...a}));
+  arr.sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+  if(arr.length === 0){
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  arr.forEach(a=>{
+    const sizesStr = SIZES.filter(s=>a.sizes && a.sizes[s])
+                          .map(s=>`${s}×${a.sizes[s]}`).join(', ') || '—';
+    const card = document.createElement('div');
+    card.className = 'anomaly-card';
+    card.innerHTML = `
+      <div class="anomaly-card-top">
+        <div class="anomaly-name">${escHtml(a.itemName||'Unknown item')}</div>
+        <span class="anomaly-when">${escHtml(formatDateNice(new Date(a.timestamp||Date.now()).toISOString()))}</span>
+      </div>
+      <div class="anomaly-detail">
+        Transfer of <b>${a.total||0} unit${a.total===1?'':'s'}</b> (${escHtml(sizesStr)})
+        from <b>${a.fromLocation==='shop'?'Shop':'Warehouse'}</b>
+        to <b>${a.toLocation==='shop'?'Shop':'Warehouse'}</b>
+        by <b>${escHtml(a.staff||'unknown')}</b> failed mid-way.
+        <br/><b>Stage:</b> ${escHtml(a.stage||'unknown')}.
+        ${a.error ? '<br/><b>Reason:</b> '+escHtml(a.error) : ''}
+        <br/><br/>Verify the affected item physically and adjust stock manually if needed, then mark as resolved.
+      </div>
+      <div class="anomaly-actions">
+        <button class="anomaly-resolve" data-act="resolve"><i class="fa-solid fa-check"></i> Mark Resolved</button>
+      </div>
+    `;
+    card.querySelector('[data-act="resolve"]').addEventListener('click', ()=>{
+      openConfirm({
+        ico:'✅', title:'Mark as resolved?',
+        msg:'Confirm that you have verified the stock physically and any necessary corrections have been made.',
+        onOk: async ()=>{
+          try { await window._db.ref('swap_anomalies/'+a.id).remove(); toast('Marked as resolved', 'ok'); }
+          catch(e){ toast('Could not update: '+(e && e.message ? e.message : e), 'err'); }
+        }
+      });
+    });
+    list.appendChild(card);
+  });
+}
+/* FIX #7 END */
+
+/* FIX #12 START — reverse a transfer from history (creates a new opposite-direction transfer) */
+async function reverseTransfer(historyEntry){
+  if(!historyEntry || !historyEntry.id){ return; }
+  if(historyEntry.reversed){ toast('This transfer was already reversed.', 'err'); return; }
+  // Find an item to use as source for the reversal — needs to be in the destination
+  // location of the original transfer (because the reversal moves stock back).
+  const reverseFromLoc = historyEntry.toLocation;     // where stock currently is
+  const reverseToLoc   = historyEntry.fromLocation;   // where stock should return
+
+  // Best candidate: the destItemId from the original transfer.
+  let sourceItem = null;
+  if(historyEntry.destItemId && state.items[historyEntry.destItemId]){
+    sourceItem = {id: historyEntry.destItemId, ...state.items[historyEntry.destItemId]};
+  }
+  // Fallback: search by normalized name + category
+  if(!sourceItem){
+    const tn = normalizeName(historyEntry.itemName);
+    Object.entries(state.items).forEach(([id, it])=>{
+      if(it.location === reverseFromLoc
+         && normalizeName(it.name) === tn
+         && it.category === historyEntry.category){
+        sourceItem = {id, ...it};
+      }
+    });
+  }
+  if(!sourceItem){
+    toast('Cannot reverse: source item no longer exists.', 'err');
+    return;
+  }
+
+  // Check that the source has enough stock to reverse
+  const insufficient = SIZES.some(s => {
+    const need = (historyEntry.sizes && historyEntry.sizes[s]) || 0;
+    const have = (sourceItem.sizes && sourceItem.sizes[s]) || 0;
+    return need > have;
+  });
+  if(insufficient){
+    toast('Cannot reverse: not enough stock at destination to send back.', 'err');
+    return;
+  }
+
+  openConfirm({
+    ico:'↩️', title:'Reverse this transfer?',
+    msg:`This will move ${historyEntry.total||0} unit${historyEntry.total===1?'':'s'} back from ${reverseFromLoc==='shop'?'Shop':'Warehouse'} to ${reverseToLoc==='shop'?'Shop':'Warehouse'}. The original record stays for audit; a new reversal entry will be added.`,
+    onOk: async ()=>{
+      // Build qty object from original sizes
+      const swapQty = {...(historyEntry.sizes||{})};
+      const total = historyEntry.total || SIZES.reduce((s,k)=>s+(swapQty[k]||0),0);
+      const staff = historyEntry.staff ? historyEntry.staff+' (reversal)' : 'reversal';
+      try {
+        await performSwap(
+          sourceItem, swapQty, total, staff, todayStr(),
+          reverseFromLoc, reverseToLoc,
+          {reversalOf: historyEntry.id}
+        );
+        // Mark the original as reversed so the button can't be clicked twice.
+        await window._db.ref('swap_history/'+historyEntry.id+'/reversed').set(true);
+      } catch(e){ /* errors already toasted by performSwap */ }
+    }
+  });
+}
+/* FIX #12 END */
+
+/* DUAL-LOCATION FEATURE START — toggle dual-mode UI and update total displays */
+function refreshDualMode(){
+  const loc = document.getElementById('fLoc').value;
+  const isBoth = (loc === 'both');
+
+  // Toggle the warehouse block + tip + breakdown chips
+  document.getElementById('dualWhBlock').style.display = isBoth ? 'block' : 'none';
+  document.getElementById('dualTip').style.display     = isBoth ? 'flex'  : 'none';
+  document.getElementById('dualBreakdown').style.display = isBoth ? 'flex' : 'none';
+
+  // Update the shop band label depending on mode
+  const bandText = document.getElementById('sBandShopText');
+  if(bandText){
+    bandText.textContent = isBoth ? 'Shop Stock by Size' : 'Stock by Size';
+  }
+
+  // Compute totals from the form
+  let shopTotal = 0, whTotal = 0;
+  SIZES.forEach(s=>{
+    shopTotal += parseInt(document.getElementById('f'+s).value)||0;
+    const wEl = document.getElementById('fw'+s);
+    if(wEl) whTotal += parseInt(wEl.value)||0;
+  });
+
+  // Update total card (works for single + both modes)
+  const numEl = document.getElementById('dualTotalNum');
+  const lbl   = document.getElementById('dualTotalLabel');
+  const sub   = document.getElementById('dualTotalSub');
+  document.getElementById('dualShopCount').textContent = shopTotal;
+  document.getElementById('dualWhCount').textContent   = whTotal;
+
+  if(isBoth){
+    const grand = shopTotal + whTotal;
+    numEl.innerHTML = grand + '<small id="dualTotalSub">across both</small>';
+    lbl.textContent = 'Total Stock';
+  } else {
+    // single-location: just show that single-location total
+    numEl.textContent = shopTotal;
+    lbl.textContent = (loc==='warehouse' ? 'Warehouse Total' : 'Shop Total');
+  }
+}
+/* DUAL-LOCATION FEATURE END */
+
+/* DRAFT (auto-save while typing in Add modal) */
+function autoSaveDraft(){
+  if(state.editingId) return; // only drafts for new items
+  const d = getFormData();
+  /* DUAL-LOCATION FEATURE START - consider warehouse sizes too in 'nothing meaningful' check */
+  const whAllZero = !d.whSizes || SIZES.every(s=>!d.whSizes[s]);
+  if(!d.name && SIZES.every(s=>!d.sizes[s]) && whAllZero) return;
+  /* DUAL-LOCATION FEATURE END */
+  d.savedAt = Date.now();
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); }catch(e){}
+}
+function loadDraft(){
+  try{
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(!d || !d.name) return;
+    document.getElementById('fName').value = d.name||'';
+    if(d.category) document.getElementById('fCat').value = d.category;
+    if(d.location) document.getElementById('fLoc').value = d.location;
+    SIZES.forEach(s=>{ if(d.sizes && d.sizes[s]!=null) document.getElementById('f'+s).value = d.sizes[s]; });
+    /* DUAL-LOCATION FEATURE START - restore warehouse sizes if present */
+    if(d.whSizes){
+      SIZES.forEach(s=>{
+        const wEl = document.getElementById('fw'+s);
+        if(wEl && d.whSizes[s]!=null) wEl.value = d.whSizes[s];
+      });
+    }
+    refreshDualMode();
+    /* DUAL-LOCATION FEATURE END */
+    if(d.image){ state.imgData=d.image; drawImgPreview(); }
+    document.getElementById('draftBanner').classList.add('show');
+  }catch(e){}
+}
+function clearDraft(){
+  localStorage.removeItem(DRAFT_KEY);
+  document.getElementById('draftBanner').classList.remove('show');
+}
+function checkDraft(){ /* placeholder for future hooks */ }
+
+/* IMAGE upload */
+function drawImgPreview(){
+  const box = document.getElementById('imgPrevBox');
+  const zone= document.getElementById('imgZone');
+  if(state.imgData){
+    zone.style.display='none';
+    box.innerHTML=`<div class="img-prev-wrap"><img class="img-prev" src="${state.imgData}"/><button class="img-rm" id="imgRm"><i class="fa-solid fa-xmark"></i></button></div>`;
+    document.getElementById('imgRm').addEventListener('click',(e)=>{e.stopPropagation();state.imgData=null;drawImgPreview();autoSaveDraft();});
+  } else {
+    zone.style.display='block';
+    box.innerHTML='';
+  }
+}
+function handleImageFile(file){
+  if(!file) return;
+  if(file.size > 1.5*1024*1024){ alert('Image too large (max 1.5MB).'); return; }
+  const reader = new FileReader();
+  reader.onload = e=>{
+    // shrink via canvas
+    const img = new Image();
+    img.onload = ()=>{
+      const max=720;
+      let w=img.width, h=img.height;
+      if(w>max||h>max){ const r=Math.min(max/w,max/h); w*=r; h*=r; }
+      const c=document.createElement('canvas');
+      c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      state.imgData = c.toDataURL('image/jpeg', 0.82);
+      drawImgPreview();
+      autoSaveDraft();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ═════════════════════════════════════════════════════════
+   DETAIL MODAL
+   ═════════════════════════════════════════════════════════ */
+let detailActiveItem = null;
+function openDetailModal(it){
+  detailActiveItem = it;
+  const cat = getCatById(it.category);
+  const t   = totalForItem(it);
+  const st  = statusFor(t);
+  const badgeCls = st==='low'?'sb-low':st==='warn'?'sb-warn':'sb-ok';
+  const badgeTxt = st==='low'?'<i class="fa-solid fa-circle-xmark"></i> Out of Stock':st==='warn'?'<i class="fa-solid fa-triangle-exclamation"></i> Low Stock':'<i class="fa-solid fa-circle-check"></i> In Stock';
+
+  const imgEl = document.getElementById('detImg');
+  if(it.image){ imgEl.src=it.image; imgEl.style.display='block'; } else { imgEl.style.display='none'; }
+  document.getElementById('detName').textContent = it.name||'Unnamed';
+  document.getElementById('detCat').textContent  = `${cat.emoji} ${cat.name} · ${it.location==='shop'?'🏪 Shop':'📦 Warehouse'}`;
+  const badge=document.getElementById('detBadge');
+  badge.className='sbadge '+badgeCls; badge.innerHTML=badgeTxt;
+
+  const sg = document.getElementById('detSizes');
+  sg.innerHTML = SIZES.map(s=>`<div class="dsz"><span class="dsz-l">${s}</span><span class="dsz-v">${(it.sizes&&it.sizes[s])||0}</span></div>`).join('');
+  /* SWAP FEATURE START - show swap button for any item with stock */
+  const detSwapBtn = document.getElementById('detSwap');
+  if(detSwapBtn){
+    detSwapBtn.style.display = (t>0) ? '' : 'none';
+    detSwapBtn.innerHTML = (it.location==='warehouse')
+      ? '<i class="fa-solid fa-right-left"></i> Transfer to Shop'
+      : '<i class="fa-solid fa-right-left"></i> Transfer to Warehouse';
+  }
+  /* SWAP FEATURE END */
+  document.getElementById('detModal').classList.add('open');
+}
+
+/* ═════════════════════════════════════════════════════════
+   SWAP FEATURE START — swap modal logic + history
+   ═════════════════════════════════════════════════════════ */
+let swapActiveItem = null;
+let swapHistoryData = {};   // mirror of swap_history Firebase node
+let swapHistorySearch = '';
+/* FIX #9 START - pagination state */
+const HIST_PAGE_SIZE = 50;
+let histVisibleCount = HIST_PAGE_SIZE;
+/* FIX #9 END */
+
+function todayStr(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+function formatDateNice(iso){
+  if(!iso) return '';
+  // accept yyyy-mm-dd or full ISO
+  const d = new Date(iso.length<=10 ? iso+'T00:00:00' : iso);
+  if(isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+}
+
+function openSwapModal(item){
+  if(!item){ return; }
+  /* SWAP FEATURE — both directions supported */
+  if(item.location !== 'warehouse' && item.location !== 'shop'){
+    alert('This item has no valid location and cannot be transferred.');
+    return;
+  }
+  const total = totalForItem(item);
+  if(total <= 0){
+    toast('This item has no stock to transfer.', 'err');
+    return;
+  }
+  swapActiveItem = item;
+
+  // close detail modal if it was open
+  document.getElementById('detModal').classList.remove('open');
+
+  // Determine direction
+  const fromLoc = item.location;
+  const toLoc   = (fromLoc === 'warehouse') ? 'shop' : 'warehouse';
+  const fromLabel = fromLoc === 'warehouse' ? '📦 Warehouse' : '🏪 Shop';
+  const toLabel   = toLoc   === 'warehouse' ? '📦 Warehouse' : '🏪 Shop';
+
+  // Stash for performSwap
+  swapActiveItem._fromLoc = fromLoc;
+  swapActiveItem._toLoc   = toLoc;
+
+  // Update modal title
+  const titleEl = document.getElementById('swapModalTitle');
+  if(titleEl) titleEl.textContent = (toLoc === 'shop') ? 'Transfer to Shop' : 'Transfer to Warehouse';
+
+  /* SIMPLE TRANSFER START - friendly direction banner + item name */
+  const fromEl = document.getElementById('txFromLoc');
+  const toEl   = document.getElementById('txToLoc');
+  if(fromEl) fromEl.textContent = fromLabel;
+  if(toEl)   toEl.textContent   = toLabel;
+  const cat = getCatById(item.category);
+  document.getElementById('swapInfoText').innerHTML =
+    `<b>${escHtml(item.name||'Unnamed')}</b> · ${cat.emoji} ${escHtml(cat.name)}`;
+  /* SIMPLE TRANSFER END */
+
+  // Build stepper rows ONLY for sizes that have stock (hides zero-stock sizes)
+  const grid = document.getElementById('swapSizeGrid');
+  const noStockEl = document.getElementById('txNoStock');
+  grid.innerHTML = '';
+  let availableSizes = 0;
+  SIZES.forEach(s=>{
+    const avail = (item.sizes && item.sizes[s]) || 0;
+    if(avail <= 0) return; // hide zero-stock sizes per spec
+    availableSizes++;
+    const row = document.createElement('div');
+    row.className = 'tx-row';
+    row.dataset.size = s;
+    row.innerHTML = `
+      <div class="tx-row-label">
+        <b>${s}</b>
+        <small>Size</small>
+      </div>
+      <div class="tx-stepper">
+        <button type="button" class="tx-step-btn minus" data-act="dec" aria-label="Decrease ${s}">−</button>
+        <input type="number" class="tx-step-num" min="0" max="${avail}" value="0" data-size="${s}" inputmode="numeric" pattern="[0-9]*" aria-label="${s} quantity"/>
+        <button type="button" class="tx-step-btn plus" data-act="inc" aria-label="Increase ${s}">+</button>
+      </div>
+      <div class="tx-row-max">of <b>${avail}</b></div>
+    `;
+    grid.appendChild(row);
+
+    // Wire up stepper buttons + input
+    const inp = row.querySelector('input');
+    const btnMinus = row.querySelector('[data-act="dec"]');
+    const btnPlus  = row.querySelector('[data-act="inc"]');
+    const updateButtons = ()=>{
+      const v = parseInt(inp.value)||0;
+      btnMinus.disabled = (v <= 0);
+      btnPlus.disabled  = (v >= avail);
+      row.classList.toggle('active', v > 0);
+      const stepper = row.querySelector('.tx-stepper');
+      if(stepper) stepper.classList.toggle('active', v > 0);
+    };
+    btnMinus.addEventListener('click', ()=>{
+      const v = parseInt(inp.value)||0;
+      if(v > 0){ inp.value = v - 1; recalcSwapTotal(); updateButtons(); }
+    });
+    btnPlus.addEventListener('click', ()=>{
+      const v = parseInt(inp.value)||0;
+      if(v < avail){ inp.value = v + 1; recalcSwapTotal(); updateButtons(); }
+    });
+    inp.addEventListener('input', ()=>{
+      // sanitize: integer in [0, avail]
+      let v = parseInt(inp.value);
+      if(isNaN(v) || v < 0) v = 0;
+      if(v > avail) v = avail;
+      if(String(v) !== inp.value) inp.value = v;
+      recalcSwapTotal();
+      updateButtons();
+    });
+    inp.addEventListener('focus', ()=>{ if(inp.value === '0') inp.value = ''; });
+    inp.addEventListener('blur',  ()=>{ if(inp.value === '' || isNaN(parseInt(inp.value))) inp.value = '0'; updateButtons(); recalcSwapTotal(); });
+    updateButtons();
+  });
+
+  // Toggle the empty-state message if no sizes have stock
+  noStockEl.style.display = (availableSizes === 0) ? 'block' : 'none';
+
+  document.getElementById('swapTotal').textContent = '0';
+  document.getElementById('swapWarn').classList.remove('show');
+
+  /* SIMPLE TRANSFER START - auto-fill last-used staff name */
+  const lastStaff = (function(){
+    try { return localStorage.getItem('sfr_last_staff_v1') || ''; } catch(e){ return ''; }
+  })();
+  document.getElementById('swapStaff').value = lastStaff;
+  /* SIMPLE TRANSFER END */
+
+  document.getElementById('swapDate').value = todayStr();
+
+  // Reset confirm button busy state
+  const confirmBtn = document.getElementById('swapConfirm');
+  if(confirmBtn){ confirmBtn.classList.remove('is-busy'); confirmBtn.disabled = false; }
+
+  document.getElementById('swapModal').classList.add('open');
+  /* SIMPLE TRANSFER START - no auto-focus on mobile to avoid keyboard popping;
+     desktop users can still tab. */
+}
+
+function recalcSwapTotal(){
+  if(!swapActiveItem) return;
+  let total = 0;
+  let over = false;
+  document.querySelectorAll('#swapSizeGrid input').forEach(inp=>{
+    const size = inp.dataset.size;
+    const avail = (swapActiveItem.sizes && swapActiveItem.sizes[size]) || 0;
+    let v = parseInt(inp.value);
+    if(isNaN(v) || v<0) v = 0;
+    if(v > avail){ over = true; }
+    // clamp display but don't auto-overwrite while typing — just flag
+    total += Math.max(0, Math.min(v, avail));
+  });
+  document.getElementById('swapTotal').textContent = total;
+  const warn = document.getElementById('swapWarn');
+  if(over){
+    document.getElementById('swapWarnText').textContent = 'One or more quantities exceed available stock. Values will be clamped to available stock.';
+    warn.classList.add('show');
+  } else {
+    warn.classList.remove('show');
+  }
+}
+
+function closeSwapModal(){
+  document.getElementById('swapModal').classList.remove('open');
+  swapActiveItem = null;
+}
+
+function confirmSwap(){
+  if(!swapActiveItem){ closeSwapModal(); return; }
+  const item = swapActiveItem;
+  const fromLoc = item._fromLoc || item.location;
+  const toLoc   = item._toLoc   || (fromLoc==='warehouse'?'shop':'warehouse');
+
+  // Collect quantities
+  const swapQty = {};
+  let total = 0;
+  let over = false;
+  document.querySelectorAll('#swapSizeGrid input').forEach(inp=>{
+    const size = inp.dataset.size;
+    const avail = (item.sizes && item.sizes[size]) || 0;
+    let v = parseInt(inp.value);
+    if(isNaN(v) || v<0) v = 0;
+    if(v > avail){ over = true; v = avail; }
+    if(v>0) swapQty[size] = v;
+    total += v;
+  });
+
+  if(total <= 0){ alert('Please enter at least 1 unit to transfer.'); return; }
+  if(over){ alert('Some quantities were clamped to available stock. Please review and confirm again.'); recalcSwapTotal(); return; }
+
+  const staff = document.getElementById('swapStaff').value.trim();
+  const dateVal = document.getElementById('swapDate').value;
+  if(!staff){ alert('Please enter the staff member name.'); document.getElementById('swapStaff').focus(); return; }
+  if(!dateVal){ alert('Please pick a date.'); document.getElementById('swapDate').focus(); return; }
+
+  const fromLabel = fromLoc==='warehouse' ? 'Warehouse' : 'Shop';
+  const toLabel   = toLoc==='warehouse'   ? 'Warehouse' : 'Shop';
+
+  openConfirm({
+    ico:'🔄', title:'Confirm transfer?',
+    msg:`Move ${total} unit${total===1?'':'s'} of "${item.name||'item'}" from ${fromLabel} to ${toLabel}? This will update stock and add an entry to swap history.`,
+    onOk:()=>performSwap(item, swapQty, total, staff, dateVal, fromLoc, toLoc)
+  });
+}
+
+/* ═════════════════════════════════════════════════════════
+   performSwap — uses Firebase transactions for atomic stock updates
+   to prevent race conditions when multiple staff swap simultaneously.
+
+   Flow:
+   1. Find or create destination item id.
+   2. Run a transaction on SOURCE/sizes that decrements only if all sizes
+      have enough stock. (Prevents negative stock under concurrency.)
+   3. If source transaction succeeds, run a transaction on DESTINATION/sizes
+      that increments. If THAT fails, roll back source by re-running a
+      transaction that adds the quantities back.
+   4. After both stock updates succeed, write the history record.
+   ═════════════════════════════════════════════════════════ */
+async function performSwap(item, swapQty, total, staff, dateVal, fromLoc, toLoc, opts){
+  opts = opts || {};
+  const isReversal = !!opts.reversalOf;
+  const confirmBtn = document.getElementById('swapConfirm');
+  if(confirmBtn){ confirmBtn.classList.add('is-busy'); confirmBtn.disabled = true; }
+
+  // Track whether source decrement succeeded (for anomaly logging on rollback failure)
+  let sourceDecremented = false;
+  let destId = null;
+
+  try {
+    /* FIX #8 START — use normalizeName for matching (display name preserved as-is) */
+    const targetName = normalizeName(item.name);
+    const targetCat  = item.category;
+    Object.entries(state.items).forEach(([id, it])=>{
+      if(id === item.id) return; // never merge with itself
+      if(it.location === toLoc
+         && normalizeName(it.name) === targetName
+         && it.category === targetCat){
+        destId = id;
+      }
+    });
+    /* FIX #8 END */
+
+    // 2. If no destination exists, create one (empty sizes) so we have a
+    //    stable ref to run a transaction on.
+    if(!destId){
+      destId = window._db.ref('items').push().key;
+      const emptySizes = {}; SIZES.forEach(s=>emptySizes[s]=0);
+      const now = Date.now();
+      await window._db.ref('items/'+destId).set({
+        name: item.name || 'Unnamed',
+        category: item.category,
+        location: toLoc,
+        sizes: emptySizes,
+        image: item.image || null,
+        created: now,
+        updated: now
+      });
+    }
+
+    // 3. TRANSACTION on source: decrement, refusing if any size goes negative.
+    const sourceRef = window._db.ref('items/'+item.id+'/sizes');
+    const srcResult = await sourceRef.transaction(currentSizes => {
+      // currentSizes can be null (item just deleted) — abort
+      if(currentSizes === null) return; // undefined = abort
+      const next = {};
+      let ok = true;
+      SIZES.forEach(s=>{
+        const cur = parseInt(currentSizes[s])||0;
+        const minus = swapQty[s] || 0;
+        const after = cur - minus;
+        if(after < 0){ ok = false; }
+        next[s] = Math.max(0, after);
+      });
+      if(!ok) return; // abort
+      return next;
+    });
+
+    if(!srcResult.committed){
+      throw new Error('Stock has changed in another session. Please reopen the transfer and try again.');
+    }
+    sourceDecremented = true;
+
+    // Update source 'updated' timestamp (best-effort, non-critical)
+    window._db.ref('items/'+item.id+'/updated').set(Date.now()).catch(()=>{});
+
+    // 4. TRANSACTION on destination: increment.
+    const destRef = window._db.ref('items/'+destId+'/sizes');
+    let destCommitted = false;
+    try {
+      const destResult = await destRef.transaction(currentSizes => {
+        const cur = currentSizes || {};
+        const next = {};
+        SIZES.forEach(s=>{
+          const c = parseInt(cur[s])||0;
+          const add = swapQty[s] || 0;
+          next[s] = c + add;
+        });
+        return next;
+      });
+      destCommitted = destResult.committed;
+      if(!destCommitted) throw new Error('Could not update destination stock.');
+    } catch(destErr){
+      // ROLLBACK source decrement
+      let rollbackOk = false;
+      try {
+        await sourceRef.transaction(currentSizes => {
+          const cur = currentSizes || {};
+          const next = {};
+          SIZES.forEach(s=>{
+            const c = parseInt(cur[s])||0;
+            const add = swapQty[s] || 0;
+            next[s] = c + add;
+          });
+          return next;
+        });
+        rollbackOk = true;
+      } catch(rbErr){
+        /* FIX #7 START — write anomaly record so the partial swap is permanently traceable */
+        try {
+          const anomalyId = window._db.ref('swap_anomalies').push().key;
+          await window._db.ref('swap_anomalies/'+anomalyId).set({
+            id: anomalyId,
+            itemId: item.id,
+            destItemId: destId,
+            itemName: item.name || 'Unnamed',
+            category: item.category,
+            fromLocation: fromLoc,
+            toLocation: toLoc,
+            sizes: swapQty,
+            total: total,
+            staff: staff,
+            stage: 'rollback_failed_after_source_decrement',
+            error: (rbErr && rbErr.message) ? rbErr.message : String(rbErr),
+            originalError: (destErr && destErr.message) ? destErr.message : String(destErr),
+            timestamp: Date.now()
+          });
+        } catch(_logErr){ /* nothing more we can do */ }
+        toast('Transfer failed AND rollback failed. Logged to Stock Anomalies — please verify physically.', 'err');
+        /* FIX #7 END */
+        throw destErr;
+      }
+      // Rollback succeeded — stock is consistent again, safe to fail cleanly.
+      throw destErr;
+    }
+
+    // Update destination 'updated' timestamp (best-effort)
+    window._db.ref('items/'+destId+'/updated').set(Date.now()).catch(()=>{});
+
+    // 5. Write history (non-critical for stock integrity, but should not fail silently)
+    const histId = window._db.ref('swap_history').push().key;
+    const cat = getCatById(item.category);
+    const histRecord = {
+      id: histId,
+      itemId: item.id,
+      destItemId: destId,
+      itemName: item.name || 'Unnamed',
+      category: item.category,
+      categoryName: cat.name,
+      categoryEmoji: cat.emoji,
+      fromLocation: fromLoc,
+      toLocation: toLoc,
+      sizes: swapQty,
+      total: total,
+      staff: staff,
+      date: dateVal,
+      timestamp: Date.now()
+    };
+    /* FIX #12 — mark reversals so they show distinctly in history */
+    if(isReversal){ histRecord.isReversal = true; histRecord.reversalOf = opts.reversalOf; }
+    try {
+      await window._db.ref('swap_history/'+histId).set(histRecord);
+    } catch(histErr){
+      // Don't fail the swap for history write — stock already moved.
+      toast('Stock transferred, but history could not be saved.', 'err');
+    }
+
+    closeSwapModal();
+    /* SIMPLE TRANSFER START - remember staff name for next transfer (skip for reversals) */
+    if(!isReversal){
+      try { localStorage.setItem('sfr_last_staff_v1', staff); } catch(e){}
+    }
+    /* SIMPLE TRANSFER END */
+    toast(
+      isReversal
+        ? `Transfer reversed (${total} unit${total===1?'':'s'} returned)`
+        : `Transferred ${total} unit${total===1?'':'s'} to ${toLoc==='shop'?'Shop':'Warehouse'}`,
+      'ok'
+    );
+  } catch(err){
+    const msg = (err && err.message) ? err.message : 'Transfer failed.';
+    toast(msg, 'err');
+    throw err; // re-throw so reverseTransfer's awaiter knows
+  } finally {
+    if(confirmBtn){ confirmBtn.classList.remove('is-busy'); confirmBtn.disabled = false; }
+  }
+}
+
+/* ─── HISTORY VIEWER ─── */
+function openHistoryModal(){
+  swapHistorySearch = '';
+  /* FIX #9 START - reset pagination on open */
+  histVisibleCount = HIST_PAGE_SIZE;
+  /* FIX #9 END */
+  const inp = document.getElementById('histSearchInp');
+  if(inp) inp.value = '';
+  renderHistoryList();
+  document.getElementById('histModal').classList.add('open');
+}
+
+function renderHistoryList(){
+  const list = document.getElementById('histList');
+  const empty = document.getElementById('histEmpty');
+  const tip = document.getElementById('histCountTip');
+  const loadMoreBtn = document.getElementById('histLoadMore');
+  const loadMoreText = document.getElementById('histLoadMoreText');
+  list.innerHTML = '';
+
+  // Convert to array & sort by timestamp desc (most recent first)
+  let arr = Object.values(swapHistoryData || {});
+  // Filter by search
+  if(swapHistorySearch.trim()){
+    const q = swapHistorySearch.toLowerCase();
+    arr = arr.filter(h =>
+      (h.itemName||'').toLowerCase().includes(q) ||
+      (h.staff||'').toLowerCase().includes(q) ||
+      (h.categoryName||'').toLowerCase().includes(q)
+    );
+  }
+  arr.sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+
+  const totalCount = arr.length;
+  /* FIX #9 START - apply pagination */
+  const visible = arr.slice(0, histVisibleCount);
+  const hidden = totalCount - visible.length;
+  /* FIX #9 END */
+
+  tip.textContent = `${totalCount} swap${totalCount===1?'':'s'} ${swapHistorySearch?'matching':'recorded'}` +
+                    (hidden>0 ? ` (showing ${visible.length})` : '');
+
+  if(totalCount === 0){
+    list.style.display='none';
+    empty.style.display='block';
+    if(loadMoreBtn) loadMoreBtn.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  list.style.display='flex';
+
+  visible.forEach(h=>{
+    const sizesHtml = SIZES
+      .filter(s=>h.sizes && h.sizes[s])
+      .map(s=>`<span class="hs-pill">${s}: <b>${h.sizes[s]}</b></span>`)
+      .join('');
+    /* FIX #12 — reversal styling + button */
+    const isReversal = !!h.isReversal;
+    const wasReversed = !!h.reversed;
+    const dirChip = isReversal
+      ? `<span class="hist-chip hist-reversal-tag"><i class="fa-solid fa-rotate-left"></i> Reversal</span>`
+      : `<span class="hist-chip">${(h.fromLocation==='shop'?'🏪':'📦')} → ${(h.toLocation==='shop'?'🏪':'📦')}</span>`;
+    const reverseBtn = (!isReversal && !wasReversed)
+      ? `<button class="hist-reverse-btn" data-act="reverse"><i class="fa-solid fa-rotate-left"></i> Reverse</button>`
+      : (wasReversed
+          ? `<button class="hist-reverse-btn" disabled><i class="fa-solid fa-check"></i> Already reversed</button>`
+          : '');
+    const card = document.createElement('div');
+    card.className = 'hist-card' + (isReversal?' reversal':'');
+    card.innerHTML = `
+      <div class="hist-top">
+        <div class="hist-name">
+          ${h.categoryEmoji||'📦'} ${escHtml(h.itemName||'Unnamed')}
+          <small>${escHtml(h.categoryName||'')}</small>
+        </div>
+        <span class="hist-date">${escHtml(formatDateNice(h.date))}</span>
+      </div>
+      <div class="hist-meta">
+        <span class="hist-chip staff"><i class="fa-solid fa-user"></i> ${escHtml(h.staff||'—')}</span>
+        <span class="hist-chip total"><i class="fa-solid fa-right-left"></i> ${h.total||0} unit${h.total===1?'':'s'}</span>
+        ${dirChip}
+      </div>
+      <div class="hist-sizes">${sizesHtml || '<span class="hs-pill">No size breakdown</span>'}</div>
+      ${reverseBtn ? `<div class="hist-actions">${reverseBtn}</div>` : ''}
+    `;
+    const revBtn = card.querySelector('[data-act="reverse"]');
+    if(revBtn) revBtn.addEventListener('click', ()=>reverseTransfer(h));
+    list.appendChild(card);
+  });
+
+  /* FIX #9 START - show load-more button if more records exist */
+  if(loadMoreBtn){
+    if(hidden > 0){
+      loadMoreBtn.style.display = 'flex';
+      if(loadMoreText) loadMoreText.textContent = `Load older transfers (${hidden} more)`;
+    } else {
+      loadMoreBtn.style.display = 'none';
+    }
+  }
+  /* FIX #9 END */
+}
+
+function clearAllHistory(){
+  openConfirm({
+    ico:'🗑️', title:'Clear all history?',
+    msg:'This will permanently delete ALL swap history records. This cannot be undone. Item stock and swap actions are NOT affected.',
+    onOk:()=>{
+      window._db.ref('swap_history').remove().then(()=>{
+        renderHistoryList();
+      }).catch(e=>alert('Could not clear history: '+e.message));
+    }
+  });
+}
+/* SWAP FEATURE END */
+
+/* ═════════════════════════════════════════════════════════
+   CONFIRM MODAL
+   ═════════════════════════════════════════════════════════ */
+let confCb = null;
+function openConfirm({ico='⚠️',title='Confirm',msg='Are you sure?',onOk}){
+  document.getElementById('confIco').textContent  = ico;
+  document.getElementById('confTitle').textContent= title;
+  document.getElementById('confMsg').textContent  = msg;
+  confCb = onOk;
+  document.getElementById('confModal').classList.add('open');
+}
+function closeConfirm(){ document.getElementById('confModal').classList.remove('open'); confCb=null; }
+
+/* ═════════════════════════════════════════════════════════
+   BACKUP / RESTORE
+   ═════════════════════════════════════════════════════════ */
+function exportBackup(){
+  try {
+    const payload = { items: state.items, categories: Object.fromEntries(state.cats.map(c=>[c.id,c])), swap_history: swapHistoryData||{}, exportedAt: new Date().toISOString(), v:3 };
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download = `sfr-backup-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('Backup downloaded', 'ok');
+  } catch(e){
+    toast('Could not export backup: '+e.message, 'err');
+  }
+}
+function importBackup(file){
+  const reader = new FileReader();
+  reader.onload = e=>{
+    let data;
+    try {
+      data = JSON.parse(e.target.result);
+      if(!data.items && !data.categories) throw new Error('Invalid backup file.');
+    } catch(err){
+      toast('Could not read backup: '+err.message, 'err');
+      return;
+    }
+    openConfirm({
+      ico:'⬆️',title:'Restore backup?',
+      msg:'This will OVERWRITE current items and categories with backup data. Continue?',
+      onOk: async ()=>{
+        // Show a brief overlay loader during restore
+        Loader.showInitial('Restoring backup…');
+        try {
+          const tasks=[];
+          if(data.items) tasks.push(window._db.ref('items').set(data.items));
+          if(data.categories) tasks.push(window._db.ref('categories').set(data.categories));
+          if(data.swap_history) tasks.push(window._db.ref('swap_history').set(data.swap_history));
+          await Promise.all(tasks);
+          Loader.hide();
+          toast('Backup restored', 'ok');
+        } catch(err){
+          Loader.hide();
+          toast('Restore failed: '+(err && err.message ? err.message : err), 'err');
+        }
+      }
+    });
+  };
+  reader.onerror = ()=> toast('Could not read backup file.', 'err');
+  reader.readAsText(file);
+}
+
+/* ═════════════════════════════════════════════════════════
+   UI BINDINGS
+   ═════════════════════════════════════════════════════════ */
+function bindUI(){
+  // Location tabs
+  document.querySelectorAll('.loc-tab').forEach(b=>{
+    b.addEventListener('click',()=>{
+      state.loc = b.dataset.loc;
+      localStorage.setItem(LOC_KEY, state.loc);
+      document.querySelectorAll('.loc-tab').forEach(x=>x.classList.toggle('active',x===b));
+      render();
+    });
+  });
+
+  // Header buttons
+  document.getElementById('hdrSearchBtn').addEventListener('click',()=>{document.getElementById('searchInp').focus();window.scrollTo({top:0,behavior:'smooth'});});
+  document.getElementById('hdrLockBtn').addEventListener('click',lockApp);
+
+  // Quick actions / FAB
+  document.getElementById('qaAdd').addEventListener('click',()=>openItemModal(null));
+  document.getElementById('fabAdd').addEventListener('click',()=>openItemModal(null));
+  document.getElementById('qaCats').addEventListener('click',()=>document.getElementById('catModal').classList.add('open'));
+
+  // Backup
+  document.getElementById('bkExport').addEventListener('click',exportBackup);
+  document.getElementById('bkImport').addEventListener('click',()=>document.getElementById('importFile').click());
+  document.getElementById('importFile').addEventListener('change',(e)=>{ if(e.target.files[0]) importBackup(e.target.files[0]); e.target.value=''; });
+
+  // Search & sort
+  document.getElementById('searchInp').addEventListener('input',(e)=>{state.search=e.target.value; render();});
+  document.getElementById('sortSel').addEventListener('change',(e)=>{state.sort=e.target.value; render();});
+
+  // DESKTOP UPGRADE START - view toggle + responsive view check
+  document.querySelectorAll('#viewToggle button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      state.view = b.dataset.view;
+      localStorage.setItem(VIEW_KEY, state.view);
+      syncViewToggle();
+      render();
+    });
+  });
+  let resizeT;
+  window.addEventListener('resize',()=>{ clearTimeout(resizeT); resizeT=setTimeout(render,120); });
+  // DESKTOP UPGRADE END
+
+  // Item modal
+  document.getElementById('itemCancel').addEventListener('click',closeItemModal);
+  document.getElementById('itemSave').addEventListener('click',saveItem);
+  ['fName','fCat','fLoc',...SIZES.map(s=>'f'+s)].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',autoSaveDraft);
+    el.addEventListener('change',autoSaveDraft);
+  });
+  /* DUAL-LOCATION FEATURE START - listen to location + warehouse size inputs */
+  document.getElementById('fLoc').addEventListener('change',refreshDualMode);
+  SIZES.forEach(s=>{
+    // shop side updates the totals too
+    const shopEl = document.getElementById('f'+s);
+    if(shopEl) shopEl.addEventListener('input',refreshDualMode);
+    // warehouse side
+    const whEl = document.getElementById('fw'+s);
+    if(whEl){
+      whEl.addEventListener('input', ()=>{ autoSaveDraft(); refreshDualMode(); });
+      whEl.addEventListener('change',()=>{ autoSaveDraft(); refreshDualMode(); });
+    }
+  });
+  /* DUAL-LOCATION FEATURE END */
+  document.getElementById('imgZone').addEventListener('click',()=>document.getElementById('fImage').click());
+  document.getElementById('fImage').addEventListener('change',(e)=>{ if(e.target.files[0]) handleImageFile(e.target.files[0]); });
+  document.getElementById('draftClear').addEventListener('click',(e)=>{e.preventDefault();clearDraft();openItemModal(null);});
+
+  // Category modal
+  document.getElementById('catClose').addEventListener('click',()=>document.getElementById('catModal').classList.remove('open'));
+  document.getElementById('emojiPickBtn').addEventListener('click',()=>{
+    state.emojiIdx = (state.emojiIdx+1)%EMOJI_OPTIONS.length;
+    document.getElementById('emojiPickBtn').textContent = EMOJI_OPTIONS[state.emojiIdx];
+  });
+  document.getElementById('emojiPickBtn').textContent = EMOJI_OPTIONS[0];
+  document.getElementById('catAddBtn').addEventListener('click',()=>{
+    const inp=document.getElementById('catNameInp');
+    const name=inp.value.trim();
+    if(!name){ inp.focus(); return; }
+    const id = 'c'+Date.now().toString(36);
+    const emoji = document.getElementById('emojiPickBtn').textContent;
+    window._db.ref('categories/'+id).set({id,emoji,name});
+    inp.value='';
+  });
+  document.getElementById('catNameInp').addEventListener('keypress',(e)=>{ if(e.key==='Enter') document.getElementById('catAddBtn').click(); });
+
+  // Detail modal
+  document.getElementById('detClose').addEventListener('click',()=>document.getElementById('detModal').classList.remove('open'));
+  document.getElementById('detEdit').addEventListener('click',()=>{
+    document.getElementById('detModal').classList.remove('open');
+    if(detailActiveItem) openItemModal(detailActiveItem);
+  });
+  /* SWAP FEATURE START - detail modal swap button */
+  const detSwapBtn = document.getElementById('detSwap');
+  if(detSwapBtn){
+    detSwapBtn.addEventListener('click',()=>{
+      if(detailActiveItem) openSwapModal(detailActiveItem);
+    });
+  }
+  /* SWAP FEATURE END */
+
+  // Confirm
+  document.getElementById('confCancel').addEventListener('click',closeConfirm);
+  document.getElementById('confOk').addEventListener('click',()=>{ const cb=confCb; closeConfirm(); if(cb) cb(); });
+
+  /* SWAP FEATURE START - swap + history bindings */
+  document.getElementById('swapCancel').addEventListener('click',closeSwapModal);
+  document.getElementById('swapConfirm').addEventListener('click',confirmSwap);
+  document.getElementById('hdrHistBtn').addEventListener('click',openHistoryModal);
+  document.getElementById('histClose').addEventListener('click',()=>document.getElementById('histModal').classList.remove('open'));
+  document.getElementById('histClearBtn').addEventListener('click',clearAllHistory);
+  document.getElementById('histSearchInp').addEventListener('input',(e)=>{
+    swapHistorySearch = e.target.value;
+    /* FIX #9 - reset pagination on search change */
+    histVisibleCount = HIST_PAGE_SIZE;
+    renderHistoryList();
+  });
+  /* SWAP FEATURE END */
+
+  /* FIX #9 START - load-more button */
+  const loadMoreBtn = document.getElementById('histLoadMore');
+  if(loadMoreBtn){
+    loadMoreBtn.addEventListener('click', ()=>{
+      histVisibleCount += HIST_PAGE_SIZE;
+      renderHistoryList();
+    });
+  }
+  /* FIX #9 END */
+
+  /* FIX #12 START - trash modal bindings */
+  document.getElementById('trashClose').addEventListener('click',()=>document.getElementById('trashModal').classList.remove('open'));
+  document.getElementById('trashEmptyExpired').addEventListener('click', emptyExpiredTrash);
+  /* FIX #12 END */
+
+  /* FIX #7 START - anomaly modal bindings */
+  document.getElementById('anomalyClose').addEventListener('click',()=>document.getElementById('anomalyModal').classList.remove('open'));
+  /* FIX #7 END */
+
+  // Click backdrop to close any modal
+  document.querySelectorAll('.modal-ov').forEach(ov=>{
+    ov.addEventListener('click',(e)=>{ if(e.target===ov) ov.classList.remove('open'); });
+  });
+
+  // ESC closes modals (desktop nicety)
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='Escape'){
+      document.querySelectorAll('.modal-ov.open').forEach(ov=>ov.classList.remove('open'));
+    }
+  });
+
+  // DESKTOP UPGRADE START - sidebar nav
+  document.querySelectorAll('.sb-link').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('.sb-link').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      const nav = b.dataset.nav;
+      switch(nav){
+        case 'dashboard': window.scrollTo({top:0,behavior:'smooth'}); break;
+        case 'add':       openItemModal(null); break;
+        case 'categories':document.getElementById('catModal').classList.add('open'); break;
+        case 'export':    exportBackup(); break;
+        case 'import':    document.getElementById('importFile').click(); break;
+        case 'history':   openHistoryModal(); break; /* SWAP FEATURE */
+        /* FIX #12 */ case 'trash':     openTrashModal(); break;
+        /* FIX #7 */  case 'anomalies': openAnomalyModal(); break;
+        case 'settings':  alert('Settings coming soon ⚙️'); break;
+        case 'logout':    lockApp(); break;
+      }
+    });
+  });
+  // DESKTOP UPGRADE END
+}
+
+function lockApp(){
+  /* FIX #5 START - detach listeners on lock so initApp can re-attach cleanly */
+  try { if(state._itemsCb)     window._db.ref('items').off('value', state._itemsCb);     } catch(e){}
+  try { if(state._catsCb)      window._db.ref('categories').off('value', state._catsCb); } catch(e){}
+  try { if(state._historyCb)   window._db.ref('swap_history').off('value', state._historyCb); } catch(e){}
+  try { if(state._anomaliesCb) window._db.ref('swap_anomalies').off('value', state._anomaliesCb); } catch(e){}
+  try { if(state._trashCb)     window._db.ref('trash').off('value', state._trashCb); } catch(e){}
+  state._itemsCb = state._catsCb = state._historyCb = state._anomaliesCb = state._trashCb = null;
+  /* FIX #5 END */
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  pinBuf=''; drawDots();
+  document.getElementById('pinErr').textContent='';
+}
+
+/* small helpers */
+function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function escAttr(s){return escHtml(s);}
+</script>
+</body>
+</html>
